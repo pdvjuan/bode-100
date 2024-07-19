@@ -126,7 +126,7 @@ namespace BodeApp
             // TODO - find out how to get the right results - TODO START
 
             // Results HERE - Version 1
-            //double[] inductivity = adapterMeasurement.Results.Rs();
+            //double[] inductivity = adapterMeasurement.Results.Ls();
             //
             //resultsListBox.Items.Clear();
             //
@@ -141,26 +141,27 @@ namespace BodeApp
 
             // Results HERE - Version 2
             double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
-            double[] inductivity = adapterMeasurement.Results.Rs(); 
-            
+            double[] inductivity = adapterMeasurement.Results.Ls();
+            double[] resistance = adapterMeasurement.Results.Rs();
+
             resultsListBox.Items.Clear();
             
-            resultsListBox.Items.Add("Frequency (Hz)  |  Inductivity (Ohm)");
+            resultsListBox.Items.Add("Frequency (Hz)  |  Inductivity (Ohm)  |  Res" );
             for (int i = 0; i < frequencies.Length; i++)
             {
-                resultsListBox.Items.Add($"{frequencies[i]}  |  {inductivity[i]}");
+                resultsListBox.Items.Add($"{frequencies[i]}  |  {inductivity[i]} | {resistance[i]}");
             }
             // Results Ends - Version 2
 
 
             // Results HERE - Version 3
             //double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
-            //double[] inductivity = adapterMeasurement.Results.Rs();
+            //double[] inductivity = adapterMeasurement.Results.Ls();
             //double[] phase = adapterMeasurement.Results.Phase(AngleUnit.Degree);
             //
             //resultsListBox.Items.Clear();
             //
-            //resultsListBox.Items.Add("Frequency (Hz)  |  Magnitude (dB)  |  Phase (Degrees)");
+            //resultsListBox.Items.Add("Frequency (Hz)  |  Inductivity (Ohm)  |  Phase (Degrees)");
             //for (int i = 0; i < frequencies.Length; i++)
             //{
             //    resultsListBox.Items.Add($"{frequencies[i]}  |  {inductivity[i]}  |  {phase[i]}");
