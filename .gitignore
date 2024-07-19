@@ -1,0 +1,107 @@
+# Ignore Visual Studio temporary files, build results, and
+# folder-based project files.
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (Mono auto generated)
+mono_crash.*
+
+# Mono Auto Generated Files
+mono_crash.*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Enable "Build with Multiple Projects" mode
+.vs/
+*.sln.docstates
+
+# Ignore packages folder
+*.nuget/
+!Packages/
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Node_modules folder
+node_modules/
+
+# Visual Studio 2019 default path for browser config
+.vscode/
+.vscode-tasks.json
+
+# Local History for JetBrains Rider
+.idea/
+
+# Rider settings folder
+.idea/
+
+# Rider system folder
+.idea/
+
+# Rider project files
+.idea/
+
+# Rider's workspace.xml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/dictionaries
+.idea/shelf
+.idea/libraries
+
+# Rider code style settings
+.idea/codeStyleSettings.xml
+
+# Rider's EditorConfig
+.idea/.editorconfig
+
+# Rider's .NET code style settings
+.idea/.idea.DotSettings
+.idea/.idea.DotSettings.user
+
+# Rider's project settings
+.idea/.idea.icf
+
+# Rider's task-specific config
+.idea/.idea.tasks.xml
+
+# Rider's UI Designer layout
+.idea/.idea.UI.xml
+
+# Rider's target versions
+.idea/.idea.targets.xml
+
+# Rider's breakpoints
+.idea/.idea.breakpoints.xml
+
+# Rider's bookmarks
+.idea/.idea.bookmarks.xml
+
+# Rider's run configurations
+.idea/.idea.run.xml
+
+# Rider's run configurations by default
+.idea/.idea.run.xml
