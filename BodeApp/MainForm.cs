@@ -109,8 +109,6 @@ namespace BodeApp
 
         private void startMeasurementButton_Click(object sender, EventArgs e)
         {
-            adapterMeasurement = bode.Impedance.CreateAdapterMeasurement();
-
             // Configure the measurement criteria HERE
             //TODO - find out if anything else is needed here for set up
             adapterMeasurement.ConfigureSweep(10, 400, 201, SweepMode.Logarithmic);
@@ -119,7 +117,8 @@ namespace BodeApp
             ExecutionState state = adapterMeasurement.ExecuteMeasurement();
             if (state != ExecutionState.Ok)
             {
-                MessageBox.Show("Measurement failed");
+                //MessageBox.Show("Measurement failed");
+                MessageBox.Show(state.ToString());
                 bode.ShutDown();
                 return;
             }
@@ -127,30 +126,30 @@ namespace BodeApp
             // TODO - find out how to get the right results - TODO START
 
             // Results HERE - Version 1
-            double[] inductivity = adapterMeasurement.Results.Rs();
-
-            resultsListBox.Items.Clear();
-
-            resultsListBox.Items.Add("Inductivity (Ohm)");
-
-            for (int i = 0; i < inductivity.Length; i++)
-            {
-                resultsListBox.Items.Add($"{inductivity[i]}");
-            }
+            //double[] inductivity = adapterMeasurement.Results.Rs();
+            //
+            //resultsListBox.Items.Clear();
+            //
+            //resultsListBox.Items.Add("Inductivity (Ohm)");
+            //
+            //for (int i = 0; i < inductivity.Length; i++)
+            //{
+            //    resultsListBox.Items.Add($"{inductivity[i]}");
+            //}
             // Results Ends - Version 1
 
 
             // Results HERE - Version 2
-            //double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
-            //double[] inductivity = adapterMeasurement.Results.Rs(); 
-            //
-            //resultsListBox.Items.Clear();
-            //
-            //resultsListBox.Items.Add("Frequency (Hz)  |  Inductivity (Ohm)");
-            //for (int i = 0; i < frequencies.Length; i++)
-            //{
-            //    resultsListBox.Items.Add($"{frequencies[i]}  |  {inductivity[i]}");
-            //}
+            double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
+            double[] inductivity = adapterMeasurement.Results.Rs(); 
+            
+            resultsListBox.Items.Clear();
+            
+            resultsListBox.Items.Add("Frequency (Hz)  |  Inductivity (Ohm)");
+            for (int i = 0; i < frequencies.Length; i++)
+            {
+                resultsListBox.Items.Add($"{frequencies[i]}  |  {inductivity[i]}");
+            }
             // Results Ends - Version 2
 
 
