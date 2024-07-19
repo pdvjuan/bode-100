@@ -10,6 +10,10 @@
         private System.Windows.Forms.Button startMeasurementButton;
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.Button disconnectButton;
+        private System.Windows.Forms.Button startCalibrationButton;
+        private System.Windows.Forms.Button shortCalibrationButton;
+        private System.Windows.Forms.Button openCalibrationButton;
+        private System.Windows.Forms.Button loadCalibrationButton;
         private System.Windows.Forms.TextBox inputTextBox1;
         private System.Windows.Forms.TextBox inputTextBox2;
         private System.Windows.Forms.TextBox inputTextBox3;
@@ -48,6 +52,9 @@
             connectButton = new Button();
             startMeasurementButton = new Button();
             exportButton = new Button();
+            openCalibrationButton = new Button();
+            shortCalibrationButton = new Button();
+            loadCalibrationButton = new Button();
             inputTextBox1 = new TextBox();
             inputTextBox2 = new TextBox();
             inputTextBox3 = new TextBox();
@@ -82,7 +89,7 @@
             // startMeasurementButton
             // 
             startMeasurementButton.Enabled = false;
-            startMeasurementButton.Location = new Point(14, 451);
+            startMeasurementButton.Location = new Point(248, 481);
             startMeasurementButton.Margin = new Padding(4, 3, 4, 3);
             startMeasurementButton.Name = "startMeasurementButton";
             startMeasurementButton.Size = new Size(175, 27);
@@ -94,7 +101,7 @@
             // exportButton
             // 
             exportButton.Enabled = false;
-            exportButton.Location = new Point(14, 486);
+            exportButton.Location = new Point(469, 481);
             exportButton.Margin = new Padding(4, 3, 4, 3);
             exportButton.Name = "exportButton";
             exportButton.Size = new Size(175, 27);
@@ -102,6 +109,39 @@
             exportButton.Text = "Export to CSV";
             exportButton.UseVisualStyleBackColor = true;
             exportButton.Click += exportButton_Click;
+            // 
+            // openCalibrationButton
+            // 
+            openCalibrationButton.Enabled = false;
+            openCalibrationButton.Location = new Point(28, 451);
+            openCalibrationButton.Name = "openCalibrationButton";
+            openCalibrationButton.Size = new Size(150, 23);
+            openCalibrationButton.TabIndex = 20;
+            openCalibrationButton.Text = "Open Calibration";
+            openCalibrationButton.UseVisualStyleBackColor = true;
+            openCalibrationButton.Click += openCalibrationButton_Click;
+            // 
+            // shortCalibrationButton
+            // 
+            shortCalibrationButton.Enabled = false;
+            shortCalibrationButton.Location = new Point(28, 483);
+            shortCalibrationButton.Name = "shortCalibrationButton";
+            shortCalibrationButton.Size = new Size(150, 23);
+            shortCalibrationButton.TabIndex = 21;
+            shortCalibrationButton.Text = "Short Calibration";
+            shortCalibrationButton.UseVisualStyleBackColor = true;
+            shortCalibrationButton.Click += shortCalibrationButton_Click;
+            // 
+            // loadCalibrationButton
+            // 
+            loadCalibrationButton.Enabled = false;
+            loadCalibrationButton.Location = new Point(28, 512);
+            loadCalibrationButton.Name = "loadCalibrationButton";
+            loadCalibrationButton.Size = new Size(150, 23);
+            loadCalibrationButton.TabIndex = 22;
+            loadCalibrationButton.Text = "Load Calibration";
+            loadCalibrationButton.UseVisualStyleBackColor = true;
+            loadCalibrationButton.Click += loadCalibrationButton_Click;
             // 
             // inputTextBox1
             // 
@@ -247,7 +287,7 @@
             // 
             // disconnectButton
             // 
-            disconnectButton.Location = new Point(14, 519);
+            disconnectButton.Location = new Point(489, 526);
             disconnectButton.Margin = new Padding(4, 3, 4, 3);
             disconnectButton.Name = "disconnectButton";
             disconnectButton.Size = new Size(175, 27);
@@ -290,6 +330,9 @@
             Controls.Add(connectButton);
             Controls.Add(exportButton);
             Controls.Add(disconnectButton);
+            Controls.Add(openCalibrationButton);
+            Controls.Add(shortCalibrationButton);
+            Controls.Add(loadCalibrationButton);
             Controls.Add(resultsListBox);
             Margin = new Padding(4, 3, 4, 3);
             Name = "MainForm";

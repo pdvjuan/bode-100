@@ -14,6 +14,7 @@ namespace BodeApp
     {
         private BodeAutomationInterface auto;
         private BodeDevice bode;
+        private AdapterMeasurement adapterMeasurement;
 
         public MainForm()
         {
@@ -34,7 +35,57 @@ namespace BodeApp
                 MessageBox.Show("Connected to Bode 100");
                 connectButton.BackColor = System.Drawing.Color.Green;
                 disconnectButton.Visible = true;
+                openCalibrationButton.Enabled = true;
+                //startMeasurementButton.Enabled = true;
+            }
+        }
+
+        private void openCalibrationButton_Click(object sender, EventArgs e)
+        {
+            adapterMeasurement = bode.Impedance.CreateAdapterMeasurement();
+            ExecutionState state = adapterMeasurement.Calibration.FullRange.ExecuteOpen();
+            if (state == ExecutionState.Ok)
+            {
+                openCalibrationButton.BackColor = Color.Green;
+                shortCalibrationButton.Enabled = true;
+                openCalibrationButton.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Open calibration failed");
+                openCalibrationButton.BackColor = SystemColors.Control;
+            }
+        }
+
+        private void shortCalibrationButton_Click(object sender, EventArgs e)
+        {
+            ExecutionState state = adapterMeasurement.Calibration.FullRange.ExecuteShort();
+            if (state == ExecutionState.Ok)
+            {
+                shortCalibrationButton.BackColor = Color.Green;
+                loadCalibrationButton.Enabled = true;
+                shortCalibrationButton.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Short calibration failed");
+                shortCalibrationButton.BackColor = SystemColors.Control;
+            }
+        }
+
+        private void loadCalibrationButton_Click(object sender, EventArgs e)
+        {
+            ExecutionState state = adapterMeasurement.Calibration.FullRange.ExecuteLoad();
+            if (state == ExecutionState.Ok)
+            {
+                loadCalibrationButton.BackColor = Color.Green;
                 startMeasurementButton.Enabled = true;
+                loadCalibrationButton.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("Load calibration failed");
+                loadCalibrationButton.BackColor = SystemColors.Control;
             }
         }
 
@@ -47,49 +98,25 @@ namespace BodeApp
                 connectButton.BackColor = SystemColors.Control; // Reset to default color
                 disconnectButton.Visible = false;
                 startMeasurementButton.Enabled = false;
+                ResetCalibrationButtons();
             }
         }
 
 
+
+
+        // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
+
         private void startMeasurementButton_Click(object sender, EventArgs e)
         {
-            AdapterMeasurement adapterMeasurement = bode.Impedance.CreateAdapterMeasurement();
-
-            // Perform Open Calibration
-            ExecutionState state = adapterMeasurement.Calibration.FullRange.ExecuteOpen();
-            if (state != ExecutionState.Ok)
-            {
-                MessageBox.Show("Open calibration failed");
-                bode.ShutDown();
-                return;
-            }
-
-            // Perform Short Calibration
-            state = adapterMeasurement.Calibration.FullRange.ExecuteShort();
-            if (state != ExecutionState.Ok)
-            {
-                MessageBox.Show("Short calibration failed");
-                bode.ShutDown();
-                return;
-            }
-
-            // Perform Load Calibration
-            state = adapterMeasurement.Calibration.FullRange.ExecuteLoad();
-            if (state != ExecutionState.Ok)
-            {
-                MessageBox.Show("Load calibration failed");
-                bode.ShutDown();
-                return;
-            }
+            adapterMeasurement = bode.Impedance.CreateAdapterMeasurement();
 
             // Configure the measurement criteria HERE
             //TODO - find out if anything else is needed here for set up
             adapterMeasurement.ConfigureSweep(10, 400, 201, SweepMode.Logarithmic);
 
-
-
             // Start the measurement
-            state = adapterMeasurement.ExecuteMeasurement();
+            ExecutionState state = adapterMeasurement.ExecuteMeasurement();
             if (state != ExecutionState.Ok)
             {
                 MessageBox.Show("Measurement failed");
@@ -146,6 +173,10 @@ namespace BodeApp
             exportButton.Enabled = true;
         }
 
+
+        // IMPORTANT CODE SECTION FOR MEASUREMENTS - END
+
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             bode?.ShutDown();
@@ -156,7 +187,19 @@ namespace BodeApp
             bool allInputsFilled = ValidateInputs();
 
             connectButton.Enabled = allInputsFilled;
+            openCalibrationButton.Enabled = allInputsFilled;
             exportButton.Enabled = allInputsFilled;
+        }
+
+        private void ResetCalibrationButtons()
+        {
+            openCalibrationButton.Enabled = true;
+            shortCalibrationButton.Enabled = false;
+            loadCalibrationButton.Enabled = false;
+
+            openCalibrationButton.BackColor = SystemColors.Control;
+            shortCalibrationButton.BackColor = SystemColors.Control;
+            loadCalibrationButton.BackColor = SystemColors.Control;
         }
 
         private bool ValidateInputs()
