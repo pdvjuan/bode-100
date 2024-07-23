@@ -118,7 +118,7 @@ namespace BodeApp
             // Configure the measurement criteria HERE
             //TODO - find out if anything else is needed here for set up - NEED TO CHECK MEASUREMENTS AT 1KHZ AND 10KHZ
             // 200 Points to measure
-            adapterMeasurement.ConfigureSweep(900, 1100, 200, SweepMode.Logarithmic); 
+            adapterMeasurement.ConfigureSweep(900, 1100, 201, SweepMode.Logarithmic); 
 
             // Start the measurement
             ExecutionState state = adapterMeasurement.ExecuteMeasurement();
@@ -143,7 +143,7 @@ namespace BodeApp
                 resultsListBox.Items.Add($"{frequenciesAt1000[i]}  |  {resistanceAt1000[i]}");
             }
 
-            adapterMeasurement.ConfigureSweep(9900, 10100, 200, SweepMode.Logarithmic);
+            adapterMeasurement.ConfigureSweep(9900, 10100, 201, SweepMode.Logarithmic);
 
             state = adapterMeasurement.ExecuteMeasurement();
             if (state != ExecutionState.Ok)
