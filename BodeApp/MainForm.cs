@@ -23,6 +23,8 @@ namespace BodeApp
         private int measurementCount = 0;
         private List<string> lengthOfSampleList = new List<string>();
         private string lengthOfSample = "";
+        private List<string> testTempList = new List<string>();
+        private string testTemp = "";
         private CancellationTokenSource cts;
 
         public MainForm()
@@ -129,6 +131,7 @@ namespace BodeApp
             measurementCount = 0;
             resistanceAt1000HzList.Clear();
             lengthOfSampleList.Clear();
+            testTempList.Clear();
             // Set the TextBox to the current date and time
             dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             startMeasurementButton.BackColor = SystemColors.Control;
@@ -215,6 +218,7 @@ namespace BodeApp
             // Find index of the frequencies closest to 1000 Hz
             int index1000Hz = FindClosestIndex(frequencies, 1000);
             lengthOfSample = inputTextBox6.Text;
+            testTemp = inputLabel7.Text;
 
             // Retrieve resistance values at the closest indices
             double resistanceAt1000Hz = resistances[index1000Hz];
@@ -222,10 +226,11 @@ namespace BodeApp
             // Add the resistance value to the list
             resistanceAt1000HzList.Add(resistanceAt1000Hz);
             lengthOfSampleList.Add(lengthOfSample);
+            testTempList.Add(testTemp);
 
             this.Invoke((MethodInvoker)delegate
             {
-                resultsListBox.Items.Add($"{measurementCount}.Sample: {lengthOfSample} Resistance at index {index1000Hz}: {resistanceAt1000Hz} Ohms");
+                resultsListBox.Items.Add($"{measurementCount}. SampleSize: {lengthOfSample}. Temp {testTemp}. Resistance at index {index1000Hz}: {resistanceAt1000Hz} Ohms");
             });
 
             exportButton.Enabled = true;
@@ -306,8 +311,9 @@ namespace BodeApp
             {
                 double resistance = resistanceAt1000HzList[i];
                 string sampleSize = lengthOfSampleList[i];
+                string testTemperature = testTempList[i];
 
-                csvLines.Add($"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {sampleSize}, {measurementDuration}, {inputTextBox7.Text}, {resistance}");
+                csvLines.Add($"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
             }
 
             File.WriteAllLines(filePath, csvLines);
