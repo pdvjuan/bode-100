@@ -305,7 +305,7 @@
             inputLabel7.Name = "inputLabel7";
             inputLabel7.Size = new Size(47, 15);
             inputLabel7.TabIndex = 13;
-            inputLabel7.Text = "Test Length:";
+            inputLabel7.Text = "Test Temp:";
             // 
             // inputLabel8
             // 
@@ -315,7 +315,7 @@
             inputLabel8.Name = "inputLabel8";
             inputLabel8.Size = new Size(47, 15);
             inputLabel8.TabIndex = 13;
-            inputLabel8.Text = "Test Temp:";
+            inputLabel8.Text = "NA/NA:";
             // 
             // dateTimeTextBox
             // 
@@ -369,8 +369,6 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(690, 590);
             Controls.Add(dateTimeTextBox);
-            Controls.Add(inputLabel8);
-            Controls.Add(inputTextBox8);
             Controls.Add(inputLabel7);
             Controls.Add(inputTextBox7);
             Controls.Add(inputLabel6);

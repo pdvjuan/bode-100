@@ -16,7 +16,6 @@ namespace BodeApp
         private BodeAutomationInterface auto;
         private BodeDevice bode;
         private AdapterMeasurement adapterMeasurement;
-        private System.Timers.Timer measurementTimer;
         private int measurementDuration; // in minutes
         private DateTime measurementEndTime;
         private List<double> resistanceAt1000HzList = new List<double>();
@@ -25,8 +24,6 @@ namespace BodeApp
         public MainForm()
         {
             InitializeComponent();
-            measurementTimer = new System.Timers.Timer(10000); // 10 seconds interval
-            measurementTimer.Elapsed += OnTimedEvent;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -42,6 +39,7 @@ namespace BodeApp
             {
                 MessageBox.Show("Connected to Bode 100");
                 connectButton.BackColor = System.Drawing.Color.LightGreen;
+                connectButton.Enabled = false;
                 disconnectButton.Visible = true;
                 disconnectButton.BackColor = Color.Red;
                 openCalibrationButton.Enabled = true;
@@ -103,7 +101,8 @@ namespace BodeApp
             {
                 bode.ShutDown();
                 MessageBox.Show("Disconnected from Bode 100");
-                connectButton.BackColor = SystemColors.Control; 
+                connectButton.BackColor = SystemColors.Control;
+                connectButton.Enabled = true;
                 disconnectButton.Visible = false;
                 startMeasurementButton.Enabled = false;
                 ResetCalibrationButtons();
@@ -119,7 +118,7 @@ namespace BodeApp
         }
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
-        private void startMeasurementButton_Click(object sender, EventArgs e)
+        private async void startMeasurementButton_Click(object sender, EventArgs e)
         {
             // Get the duration in minutes from the user
             if (!int.TryParse(durationTextBox.Text, out measurementDuration))
@@ -131,37 +130,33 @@ namespace BodeApp
             startMeasurementButton.BackColor = Color.LightGreen;
             stopMeasurementButton.Visible = true;
 
-            // Calculate the end time
-            measurementEndTime = DateTime.Now.AddMinutes(measurementDuration);
+            int seconds = measurementDuration * 60;
+            int numberOfIntervals = seconds / 10;
 
-            // Start the timer
-            measurementTimer.Start();
+            // Start the measurement process on a separate thread
+            await Task.Run(() => RunMeasurementLoop(numberOfIntervals));
+
         }
 
         private void stopMeasurementButton_Click(object sender, EventArgs e)
         {
-            // Stop the timer
-            measurementTimer.Stop();
+            // Stop the time
             MessageBox.Show("Measurement process completed.");
             stopMeasurementButton.Visible = false;
         }
 
-        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        private void RunMeasurementLoop(int numberOfIntervals)
         {
-            if (DateTime.Now >= measurementEndTime)
+            for (int i = 0; i < numberOfIntervals; i++)
             {
-                measurementTimer.Stop();
-                MessageBox.Show("Measurement process completed.");
-                stopMeasurementButton.Visible = false;
-                return;
+                ExecuteMeasurement();
+                // Wait for 10 seconds before the next execution
+                Thread.Sleep(10000);
             }
-
-            // Perform the measurement
-            ExecuteMeasurement();
-
         }
-       private void ExecuteMeasurement()
+        private void ExecuteMeasurement()
         {
+            measurementCount++;
             // Configure sweep
             adapterMeasurement.ConfigureSweep(900, 1100, 201, SweepMode.Logarithmic);
 
@@ -264,7 +259,7 @@ namespace BodeApp
 
             foreach (double resistance in resistanceAt1000HzList)
             {
-                csvLines.Add($"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {inputTextBox6.Text}, {inputTextBox7.Text}, {inputTextBox8.Text}, {resistance}");
+                csvLines.Add($"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {inputTextBox6.Text},{measurementDuration}, {inputTextBox7.Text}, {resistance}");
             }
 
             File.WriteAllLines(filePath, csvLines);
