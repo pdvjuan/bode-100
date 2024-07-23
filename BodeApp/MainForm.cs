@@ -111,7 +111,9 @@ namespace BodeApp
         {
             // Configure the measurement criteria HERE
             //TODO - find out if anything else is needed here for set up
-            adapterMeasurement.ConfigureSweep(10, 400, 201, SweepMode.Logarithmic);
+            // 100Hz to 40MHz (100,40000000) 
+            // 201 Points to measure
+            adapterMeasurement.ConfigureSweep(100, 40000000, 201, SweepMode.Logarithmic); 
 
             // Start the measurement
             ExecutionState state = adapterMeasurement.ExecuteMeasurement();
@@ -125,48 +127,27 @@ namespace BodeApp
 
             // TODO - find out how to get the right results - TODO START
 
-            // Results HERE - Version 1
-            //double[] inductivity = adapterMeasurement.Results.Ls();
-            //
-            //resultsListBox.Items.Clear();
-            //
-            //resultsListBox.Items.Add("Inductivity (Ohm)");
-            //
-            //for (int i = 0; i < inductivity.Length; i++)
-            //{
-            //    resultsListBox.Items.Add($"{inductivity[i]}");
-            //}
-            // Results Ends - Version 1
-
-
-            // Results HERE - Version 2
             double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
-            double[] inductivity = adapterMeasurement.Results.Ls();
             double[] resistance = adapterMeasurement.Results.Rs();
+            double resAt = adapterMeasurement.Results.RsAt(0);
 
             resultsListBox.Items.Clear();
             
-            resultsListBox.Items.Add("Frequency (Hz)  |  Inductivity (Ohm)  |  Res" );
+            resultsListBox.Items.Add("Frequency (Hz)  |  Res" );
             for (int i = 0; i < frequencies.Length; i++)
             {
-                resultsListBox.Items.Add($"{frequencies[i]}  |  {inductivity[i]} | {resistance[i]}");
+                resultsListBox.Items.Add($"{frequencies[i]}  |  {resistance[i]}");
             }
-            // Results Ends - Version 2
 
+            int index1000Hz = FindClosestIndex(frequencies, 1000);
+            int index10000Hz = FindClosestIndex(frequencies, 10000);
 
-            // Results HERE - Version 3
-            //double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
-            //double[] inductivity = adapterMeasurement.Results.Ls();
-            //double[] phase = adapterMeasurement.Results.Phase(AngleUnit.Degree);
-            //
-            //resultsListBox.Items.Clear();
-            //
-            //resultsListBox.Items.Add("Frequency (Hz)  |  Inductivity (Ohm)  |  Phase (Degrees)");
-            //for (int i = 0; i < frequencies.Length; i++)
-            //{
-            //    resultsListBox.Items.Add($"{frequencies[i]}  |  {inductivity[i]}  |  {phase[i]}");
-            //}
-            // Results End - Version 3
+            resultsListBox.Items.Add($"Index closest to 1000 Hz: {index1000Hz}");
+            resultsListBox.Items.Add($"Frequency at index {index1000Hz}: {frequencies[index1000Hz]} Hz");
+
+            resultsListBox.Items.Add($"Index closest to 10000 Hz: {index10000Hz}");
+            resultsListBox.Items.Add($"Frequency at index {index10000Hz}: {frequencies[index10000Hz]} Hz");
+
 
             // TODO - find out how to get the right results - TODO START
 
@@ -176,6 +157,23 @@ namespace BodeApp
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - END
 
+        static int FindClosestIndex(double[] array, double target)
+        {
+            int closestIndex = -1;
+            double smallestDifference = double.MaxValue;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                double difference = Math.Abs(array[i] - target);
+                if (difference < smallestDifference)
+                {
+                    smallestDifference = difference;
+                    closestIndex = i;
+                }
+            }
+
+            return closestIndex;
+        }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {

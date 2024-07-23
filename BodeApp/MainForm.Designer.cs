@@ -10,7 +10,6 @@
         private System.Windows.Forms.Button startMeasurementButton;
         private System.Windows.Forms.Button exportButton;
         private System.Windows.Forms.Button disconnectButton;
-        private System.Windows.Forms.Button startCalibrationButton;
         private System.Windows.Forms.Button shortCalibrationButton;
         private System.Windows.Forms.Button openCalibrationButton;
         private System.Windows.Forms.Button loadCalibrationButton;
