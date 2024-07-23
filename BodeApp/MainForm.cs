@@ -8,6 +8,7 @@ using OmicronLab.VectorNetworkAnalysis.AutomationInterface.Interfaces;
 using OmicronLab.VectorNetworkAnalysis.AutomationInterface.Interfaces.Measurements;
 using OmicronLab.VectorNetworkAnalysis.AutomationInterface.Enumerations;
 using OmicronLab.VectorNetworkAnalysis.AutomationInterface.DataTypes;
+using Mages.Core.Tokens;
 
 namespace BodeApp
 {
@@ -20,6 +21,7 @@ namespace BodeApp
         private DateTime measurementEndTime;
         private List<double> resistanceAt1000HzList = new List<double>();
         private int measurementCount = 0;
+        private CancellationTokenSource cts;
 
         public MainForm()
         {
@@ -29,7 +31,8 @@ namespace BodeApp
         private void MainForm_Load(object sender, EventArgs e)
         {
             auto = new BodeAutomation();
-            dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); // Set the TextBox to the current date and time
+            // Set the TextBox to the current date and time
+            dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); 
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -117,6 +120,17 @@ namespace BodeApp
             }
         }
 
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            resultsListBox.Items.Clear();
+            durationTextBox.Text = string.Empty;
+            measurementCount = 0;
+            // Set the TextBox to the current date and time
+            dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            startMeasurementButton.BackColor = SystemColors.Control;
+            stopMeasurementButton.Visible = false;
+        }
+
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
         private async void startMeasurementButton_Click(object sender, EventArgs e)
         {
@@ -133,24 +147,41 @@ namespace BodeApp
             int seconds = measurementDuration * 60;
             int numberOfIntervals = seconds / 10;
 
-            // Start the measurement process on a separate thread
-            await Task.Run(() => RunMeasurementLoop(numberOfIntervals));
+            // Initialize the cancellation token source
+            cts = new CancellationTokenSource();
+
+            try
+            {
+                // Start the measurement process on a separate thread
+                await Task.Run(() => RunMeasurementLoop(numberOfIntervals, cts.Token));
+                MessageBox.Show("Measurement process completed.");
+            }
+            catch (OperationCanceledException)
+            {
+                MessageBox.Show("Measurement process was canceled.");
+                stopMeasurementButton.Visible = false;
+                startMeasurementButton.BackColor = SystemColors.Control;
+            }
+            finally
+            {
+                stopMeasurementButton.Visible = false;
+                startMeasurementButton.BackColor = SystemColors.Control;
+            }
 
         }
 
         private void stopMeasurementButton_Click(object sender, EventArgs e)
         {
-            // Stop the time
-            MessageBox.Show("Measurement process completed.");
-            stopMeasurementButton.Visible = false;
+            cts.Cancel();
         }
 
-        private void RunMeasurementLoop(int numberOfIntervals)
+        private void RunMeasurementLoop(int numberOfIntervals,CancellationToken token)
         {
             for (int i = 0; i < numberOfIntervals; i++)
             {
+                token.ThrowIfCancellationRequested();
                 ExecuteMeasurement();
-                // Wait for 10 seconds before the next execution
+                // 10000 = 10 seconds
                 Thread.Sleep(10000);
             }
         }

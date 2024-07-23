@@ -34,7 +34,7 @@
         private System.Windows.Forms.TextBox durationTextBox;
         private System.Windows.Forms.Label durationLabel;
         private System.Windows.Forms.Button stopMeasurementButton;
-
+        private System.Windows.Forms.Button resetButton;
 
         protected override void Dispose(bool disposing)
         {
@@ -60,6 +60,7 @@
             openCalibrationButton = new Button();
             shortCalibrationButton = new Button();
             loadCalibrationButton = new Button();
+            resetButton = new Button();
             inputTextBox1 = new TextBox();
             inputTextBox2 = new TextBox();
             inputTextBox3 = new TextBox();
@@ -123,7 +124,7 @@
             // exportButton
             // 
             exportButton.Enabled = false;
-            exportButton.Location = new Point(489, 471);
+            exportButton.Location = new Point(502, 508);
             exportButton.Margin = new Padding(4, 3, 4, 3);
             exportButton.Name = "exportButton";
             exportButton.Size = new Size(175, 27);
@@ -164,6 +165,18 @@
             loadCalibrationButton.Text = "Load Calibration";
             loadCalibrationButton.UseVisualStyleBackColor = true;
             loadCalibrationButton.Click += loadCalibrationButton_Click;
+            // 
+            // resetButton
+            // 
+            resetButton.Location = new Point(528, 466);
+            resetButton.Name = "resetButton";
+            resetButton.Size = new Size(150, 23);
+            resetButton.TabIndex = 19;
+            resetButton.Text = "Reset";
+            //resetButton.UseVisualStyleBackColor = true;
+            resetButton.BackColor = Color.Red;
+            resetButton.ForeColor = Color.White;
+            resetButton.Click += resetButton_Click;
             // 
             // inputTextBox1
             // 
@@ -243,7 +256,7 @@
             inputLabel1.Location = new Point(14, 45);
             inputLabel1.Margin = new Padding(4, 0, 4, 0);
             inputLabel1.Name = "inputLabel1";
-            inputLabel1.Size = new Size(47, 15);
+            inputLabel1.Size = new Size(42, 15);
             inputLabel1.TabIndex = 1;
             inputLabel1.Text = "Name:";
             // 
@@ -253,7 +266,7 @@
             inputLabel2.Location = new Point(14, 98);
             inputLabel2.Margin = new Padding(4, 0, 4, 0);
             inputLabel2.Name = "inputLabel2";
-            inputLabel2.Size = new Size(47, 15);
+            inputLabel2.Size = new Size(65, 15);
             inputLabel2.TabIndex = 3;
             inputLabel2.Text = "Test Name:";
             // 
@@ -263,7 +276,7 @@
             inputLabel3.Location = new Point(14, 151);
             inputLabel3.Margin = new Padding(4, 0, 4, 0);
             inputLabel3.Name = "inputLabel3";
-            inputLabel3.Size = new Size(47, 15);
+            inputLabel3.Size = new Size(63, 15);
             inputLabel3.TabIndex = 5;
             inputLabel3.Text = "Sample ID:";
             // 
@@ -273,7 +286,7 @@
             inputLabel4.Location = new Point(14, 204);
             inputLabel4.Margin = new Padding(4, 0, 4, 0);
             inputLabel4.Name = "inputLabel4";
-            inputLabel4.Size = new Size(47, 15);
+            inputLabel4.Size = new Size(74, 15);
             inputLabel4.TabIndex = 7;
             inputLabel4.Text = "Room Temp:";
             // 
@@ -283,7 +296,7 @@
             inputLabel5.Location = new Point(14, 257);
             inputLabel5.Margin = new Padding(4, 0, 4, 0);
             inputLabel5.Name = "inputLabel5";
-            inputLabel5.Size = new Size(47, 15);
+            inputLabel5.Size = new Size(60, 15);
             inputLabel5.TabIndex = 9;
             inputLabel5.Text = "Humidity:";
             // 
@@ -293,7 +306,7 @@
             inputLabel6.Location = new Point(14, 310);
             inputLabel6.Margin = new Padding(4, 0, 4, 0);
             inputLabel6.Name = "inputLabel6";
-            inputLabel6.Size = new Size(47, 15);
+            inputLabel6.Size = new Size(89, 15);
             inputLabel6.TabIndex = 11;
             inputLabel6.Text = "Sample Length:";
             // 
@@ -303,7 +316,7 @@
             inputLabel7.Location = new Point(14, 363);
             inputLabel7.Margin = new Padding(4, 0, 4, 0);
             inputLabel7.Name = "inputLabel7";
-            inputLabel7.Size = new Size(47, 15);
+            inputLabel7.Size = new Size(62, 15);
             inputLabel7.TabIndex = 13;
             inputLabel7.Text = "Test Temp:";
             // 
@@ -328,7 +341,7 @@
             // 
             // disconnectButton
             // 
-            disconnectButton.Location = new Point(499, 543);
+            disconnectButton.Location = new Point(502, 553);
             disconnectButton.Margin = new Padding(4, 3, 4, 3);
             disconnectButton.Name = "disconnectButton";
             disconnectButton.Size = new Size(175, 27);
@@ -341,10 +354,10 @@
             // resultsListBox
             // 
             resultsListBox.ItemHeight = 15;
-            resultsListBox.Location = new Point(248, 10);
+            resultsListBox.Location = new Point(229, 10);
             resultsListBox.Margin = new Padding(4, 3, 4, 3);
             resultsListBox.Name = "resultsListBox";
-            resultsListBox.Size = new Size(396, 454);
+            resultsListBox.Size = new Size(448, 454);
             resultsListBox.TabIndex = 19;
             // 
             // durationTextBox
@@ -383,6 +396,7 @@
             Controls.Add(inputTextBox2);
             Controls.Add(inputLabel1);
             Controls.Add(inputTextBox1);
+            Controls.Add(resetButton);
             Controls.Add(startMeasurementButton);
             Controls.Add(stopMeasurementButton);
             Controls.Add(connectButton);
