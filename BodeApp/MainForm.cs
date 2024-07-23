@@ -102,7 +102,13 @@ namespace BodeApp
             }
         }
 
-
+        private void exportButton_Click(object sender, EventArgs e)
+        {
+            if (ValidateInputs())
+            {
+                SaveToCSV();
+            }
+        }
 
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
@@ -154,7 +160,6 @@ namespace BodeApp
             exportButton.Enabled = true;
         }
 
-
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - END
 
         static int FindClosestIndex(double[] array, double target)
@@ -174,12 +179,7 @@ namespace BodeApp
 
             return closestIndex;
         }
-
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            bode?.ShutDown();
-        }
-
+        
         private void inputTextBox_TextChanged(object sender, EventArgs e)
         {
             bool allInputsFilled = ValidateInputs();
@@ -211,13 +211,6 @@ namespace BodeApp
                    !string.IsNullOrWhiteSpace(inputTextBox7.Text);
         }
 
-        private void exportButton_Click(object sender, EventArgs e)
-        {
-            if (ValidateInputs())
-            {
-                SaveToCSV();
-            }
-        }
 
         private void SaveToCSV()
         {
@@ -234,6 +227,11 @@ namespace BodeApp
             File.WriteAllLines(filePath, csvLines);
 
             MessageBox.Show($"Data has been exported to {filePath}");
+        }
+        
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            bode?.ShutDown();
         }
     }
 }
