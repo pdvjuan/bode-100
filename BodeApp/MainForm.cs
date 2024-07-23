@@ -255,6 +255,7 @@ namespace BodeApp
             bool allInputsFilled = ValidateInputs();
 
             connectButton.Enabled = allInputsFilled;
+            openCalibrationButton.Enabled = allInputsFilled;
         }
 
         private void ResetCalibrationButtons()
