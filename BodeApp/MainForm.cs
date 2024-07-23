@@ -285,8 +285,8 @@ namespace BodeApp
         private void SaveToCSV()
         {
             // Format the current date and time for use in the filename
-            string timestamp = DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss");
-            string filePath = $"Report_{timestamp}.csv";
+            string timestamp = DateTime.Now.ToString("yy-MM-dd");
+            string filePath = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
 
             var csvLines = new List<string>
             {
