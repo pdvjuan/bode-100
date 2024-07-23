@@ -165,6 +165,17 @@ namespace BodeApp
                 resultsListBox.Items.Add($"{frequenciesAt10000[i]}  |  {resistanceAt10000[i]}");
             }
 
+            int index1000Hz = FindClosestIndex(frequenciesAt1000, 1000);
+            int index10000Hz = FindClosestIndex(frequenciesAt10000, 10000);
+
+            resultsListBox.Items.Add($"Index closest to 1000 Hz: {index1000Hz}");
+            resultsListBox.Items.Add($"Frequency at index {index1000Hz}: {frequenciesAt1000[index1000Hz]} Hz");
+            resultsListBox.Items.Add($"Resistance at index {index1000Hz}: {resistanceAt1000[index1000Hz]} Hz");
+
+            resultsListBox.Items.Add($"Index closest to 10000 Hz: {index10000Hz}");
+            resultsListBox.Items.Add($"Frequency at index {index10000Hz}: {frequenciesAt10000[index10000Hz]} Hz");
+            resultsListBox.Items.Add($"Resistance at index {index10000Hz}: {resistanceAt10000[index10000Hz]} Hz");
+
             // TODO - find out how to get the right results - TODO START
 
             exportButton.Enabled = true;
@@ -203,6 +214,23 @@ namespace BodeApp
                    !string.IsNullOrWhiteSpace(inputTextBox7.Text);
         }
 
+        static int FindClosestIndex(double[] array, double target)
+        {
+            int closestIndex = -1;
+            double smallestDifference = double.MaxValue;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                double difference = Math.Abs(array[i] - target);
+                if (difference < smallestDifference)
+                {
+                    smallestDifference = difference;
+                    closestIndex = i;
+                }
+            }
+
+            return closestIndex;
+        }
 
         private void SaveToCSV()
         {
