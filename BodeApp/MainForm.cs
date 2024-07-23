@@ -127,6 +127,8 @@ namespace BodeApp
             resultsListBox.Items.Clear();
             durationTextBox.Text = string.Empty;
             measurementCount = 0;
+            resistanceAt1000HzList.Clear();
+            lengthOfSampleList.Clear();
             // Set the TextBox to the current date and time
             dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             startMeasurementButton.BackColor = SystemColors.Control;
@@ -253,8 +255,6 @@ namespace BodeApp
             bool allInputsFilled = ValidateInputs();
 
             connectButton.Enabled = allInputsFilled;
-            openCalibrationButton.Enabled = allInputsFilled;
-            exportButton.Enabled = allInputsFilled;
         }
 
         private void ResetCalibrationButtons()
