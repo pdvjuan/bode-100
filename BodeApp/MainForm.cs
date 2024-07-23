@@ -143,6 +143,7 @@ namespace BodeApp
 
             startMeasurementButton.BackColor = Color.LightGreen;
             stopMeasurementButton.Visible = true;
+            stopMeasurementButton.Enabled = true;
 
             int seconds = measurementDuration * 60;
             int numberOfIntervals = seconds / 10;
