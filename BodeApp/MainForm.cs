@@ -21,6 +21,8 @@ namespace BodeApp
         private DateTime measurementEndTime;
         private List<double> resistanceAt1000HzList = new List<double>();
         private int measurementCount = 0;
+        private List<string> lengthOfSampleList = new List<string>();
+        private string lengthOfSample = "";
         private CancellationTokenSource cts;
 
         public MainForm()
@@ -210,16 +212,18 @@ namespace BodeApp
 
             // Find index of the frequencies closest to 1000 Hz
             int index1000Hz = FindClosestIndex(frequencies, 1000);
+            lengthOfSample = inputTextBox6.Text;
 
             // Retrieve resistance values at the closest indices
             double resistanceAt1000Hz = resistances[index1000Hz];
 
             // Add the resistance value to the list
             resistanceAt1000HzList.Add(resistanceAt1000Hz);
+            lengthOfSampleList.Add(lengthOfSample);
 
             this.Invoke((MethodInvoker)delegate
             {
-                resultsListBox.Items.Add($"{measurementCount}. Resistance at index {index1000Hz}: {resistanceAt1000Hz} Ohms");
+                resultsListBox.Items.Add($"{measurementCount}.Sample: {lengthOfSample} Resistance at index {index1000Hz}: {resistanceAt1000Hz} Ohms");
             });
 
             exportButton.Enabled = true;
@@ -289,9 +293,20 @@ namespace BodeApp
                 "Date, Name, Test Name, Sample ID, Room Temp, Humidity, Sample Length, Test Length, Test Temp, 1000s Resistance",
             };
 
-            foreach (double resistance in resistanceAt1000HzList)
+            // Ensure both lists have the same length
+            if (resistanceAt1000HzList.Count != lengthOfSampleList.Count)
             {
-                csvLines.Add($"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {inputTextBox6.Text},{measurementDuration}, {inputTextBox7.Text}, {resistance}");
+                MessageBox.Show("The resistance list and sample size list do not have the same number of elements.");
+                return;
+            }
+
+            // Iterate through both lists using a for loop
+            for (int i = 0; i < resistanceAt1000HzList.Count; i++)
+            {
+                double resistance = resistanceAt1000HzList[i];
+                string sampleSize = lengthOfSampleList[i];
+
+                csvLines.Add($"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {sampleSize}, {measurementDuration}, {inputTextBox7.Text}, {resistance}");
             }
 
             File.WriteAllLines(filePath, csvLines);
