@@ -116,10 +116,9 @@ namespace BodeApp
         private void startMeasurementButton_Click(object sender, EventArgs e)
         {
             // Configure the measurement criteria HERE
-            //TODO - find out if anything else is needed here for set up
-            // 100Hz to 40MHz (100,40000000) 
-            // 201 Points to measure
-            adapterMeasurement.ConfigureSweep(100, 40000000, 201, SweepMode.Logarithmic); 
+            //TODO - find out if anything else is needed here for set up - NEED TO CHECK MEASUREMENTS AT 1KHZ AND 10KHZ
+            // 200 Points to measure
+            adapterMeasurement.ConfigureSweep(900, 1100, 200, SweepMode.Logarithmic); 
 
             // Start the measurement
             ExecutionState state = adapterMeasurement.ExecuteMeasurement();
@@ -133,27 +132,38 @@ namespace BodeApp
 
             // TODO - find out how to get the right results - TODO START
 
-            double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
-            double[] resistance = adapterMeasurement.Results.Rs();
-            double resAt = adapterMeasurement.Results.RsAt(0);
+            double[] frequenciesAt1000 = adapterMeasurement.Results.MeasurementFrequencies;
+            double[] resistanceAt1000 = adapterMeasurement.Results.Rs();
 
             resultsListBox.Items.Clear();
             
             resultsListBox.Items.Add("Frequency (Hz)  |  Res" );
-            for (int i = 0; i < frequencies.Length; i++)
+            for (int i = 0; i < frequenciesAt1000.Length; i++)
             {
-                resultsListBox.Items.Add($"{frequencies[i]}  |  {resistance[i]}");
+                resultsListBox.Items.Add($"{frequenciesAt1000[i]}  |  {resistanceAt1000[i]}");
             }
 
-            int index1000Hz = FindClosestIndex(frequencies, 1000);
-            int index10000Hz = FindClosestIndex(frequencies, 10000);
+            adapterMeasurement.ConfigureSweep(9900, 10100, 200, SweepMode.Logarithmic);
 
-            resultsListBox.Items.Add($"Index closest to 1000 Hz: {index1000Hz}");
-            resultsListBox.Items.Add($"Frequency at index {index1000Hz}: {frequencies[index1000Hz]} Hz");
+            state = adapterMeasurement.ExecuteMeasurement();
+            if (state != ExecutionState.Ok)
+            {
+                //MessageBox.Show("Measurement failed");
+                MessageBox.Show(state.ToString());
+                bode.ShutDown();
+                return;
+            }
 
-            resultsListBox.Items.Add($"Index closest to 10000 Hz: {index10000Hz}");
-            resultsListBox.Items.Add($"Frequency at index {index10000Hz}: {frequencies[index10000Hz]} Hz");
+            // TODO - find out how to get the right results - TODO START
 
+            double[] frequenciesAt10000 = adapterMeasurement.Results.MeasurementFrequencies;
+            double[] resistanceAt10000 = adapterMeasurement.Results.Rs();
+
+            resultsListBox.Items.Add("Frequency (Hz)  |  Res");
+            for (int i = 0; i < frequenciesAt10000.Length; i++)
+            {
+                resultsListBox.Items.Add($"{frequenciesAt10000[i]}  |  {resistanceAt10000[i]}");
+            }
 
             // TODO - find out how to get the right results - TODO START
 
@@ -161,24 +171,6 @@ namespace BodeApp
         }
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - END
-
-        static int FindClosestIndex(double[] array, double target)
-        {
-            int closestIndex = -1;
-            double smallestDifference = double.MaxValue;
-
-            for (int i = 0; i < array.Length; i++)
-            {
-                double difference = Math.Abs(array[i] - target);
-                if (difference < smallestDifference)
-                {
-                    smallestDifference = difference;
-                    closestIndex = i;
-                }
-            }
-
-            return closestIndex;
-        }
         
         private void inputTextBox_TextChanged(object sender, EventArgs e)
         {
