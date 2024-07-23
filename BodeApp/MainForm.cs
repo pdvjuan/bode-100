@@ -143,38 +143,12 @@ namespace BodeApp
                 resultsListBox.Items.Add($"{frequenciesAt1000[i]}  |  {resistanceAt1000[i]}");
             }
 
-            adapterMeasurement.ConfigureSweep(9900, 10100, 201, SweepMode.Logarithmic);
-
-            state = adapterMeasurement.ExecuteMeasurement();
-            if (state != ExecutionState.Ok)
-            {
-                //MessageBox.Show("Measurement failed");
-                MessageBox.Show(state.ToString());
-                bode.ShutDown();
-                return;
-            }
-
-            // TODO - find out how to get the right results - TODO START
-
-            double[] frequenciesAt10000 = adapterMeasurement.Results.MeasurementFrequencies;
-            double[] resistanceAt10000 = adapterMeasurement.Results.Rs();
-
-            resultsListBox.Items.Add("Frequency (Hz)  |  Res");
-            for (int i = 0; i < frequenciesAt10000.Length; i++)
-            {
-                resultsListBox.Items.Add($"{frequenciesAt10000[i]}  |  {resistanceAt10000[i]}");
-            }
-
             int index1000Hz = FindClosestIndex(frequenciesAt1000, 1000);
-            int index10000Hz = FindClosestIndex(frequenciesAt10000, 10000);
 
             resultsListBox.Items.Add($"Index closest to 1000 Hz: {index1000Hz}");
             resultsListBox.Items.Add($"Frequency at index {index1000Hz}: {frequenciesAt1000[index1000Hz]} Hz");
             resultsListBox.Items.Add($"Resistance at index {index1000Hz}: {resistanceAt1000[index1000Hz]} Hz");
 
-            resultsListBox.Items.Add($"Index closest to 10000 Hz: {index10000Hz}");
-            resultsListBox.Items.Add($"Frequency at index {index10000Hz}: {frequenciesAt10000[index10000Hz]} Hz");
-            resultsListBox.Items.Add($"Resistance at index {index10000Hz}: {resistanceAt10000[index10000Hz]} Hz");
 
             // TODO - find out how to get the right results - TODO START
 
