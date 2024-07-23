@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
+using System.Timers;
 using OmicronLab.VectorNetworkAnalysis.AutomationInterface;
 using OmicronLab.VectorNetworkAnalysis.AutomationInterface.Interfaces;
 using OmicronLab.VectorNetworkAnalysis.AutomationInterface.Interfaces.Measurements;
@@ -15,10 +16,17 @@ namespace BodeApp
         private BodeAutomationInterface auto;
         private BodeDevice bode;
         private AdapterMeasurement adapterMeasurement;
+        private System.Timers.Timer measurementTimer;
+        private int measurementDuration; // in minutes
+        private DateTime measurementEndTime;
+        private List<double> resistanceAt1000HzList = new List<double>();
+        private int measurementCount = 0;
 
         public MainForm()
         {
             InitializeComponent();
+            measurementTimer = new System.Timers.Timer(10000); // 10 seconds interval
+            measurementTimer.Elapsed += OnTimedEvent;
         }
 
         private void MainForm_Load(object sender, EventArgs e)
@@ -33,10 +41,10 @@ namespace BodeApp
             if (bode != null)
             {
                 MessageBox.Show("Connected to Bode 100");
-                connectButton.BackColor = System.Drawing.Color.Green;
+                connectButton.BackColor = System.Drawing.Color.LightGreen;
                 disconnectButton.Visible = true;
+                disconnectButton.BackColor = Color.Red;
                 openCalibrationButton.Enabled = true;
-                //startMeasurementButton.Enabled = true;
             }
         }
 
@@ -46,7 +54,7 @@ namespace BodeApp
             ExecutionState state = adapterMeasurement.Calibration.FullRange.ExecuteOpen();
             if (state == ExecutionState.Ok)
             {
-                openCalibrationButton.BackColor = Color.Green;
+                openCalibrationButton.BackColor = Color.LightGreen;
                 shortCalibrationButton.Enabled = true;
                 openCalibrationButton.Enabled = false;
             }
@@ -62,7 +70,7 @@ namespace BodeApp
             ExecutionState state = adapterMeasurement.Calibration.FullRange.ExecuteShort();
             if (state == ExecutionState.Ok)
             {
-                shortCalibrationButton.BackColor = Color.Green;
+                shortCalibrationButton.BackColor = Color.LightGreen;
                 loadCalibrationButton.Enabled = true;
                 shortCalibrationButton.Enabled = false;
             }
@@ -78,7 +86,7 @@ namespace BodeApp
             ExecutionState state = adapterMeasurement.Calibration.FullRange.ExecuteLoad();
             if (state == ExecutionState.Ok)
             {
-                loadCalibrationButton.BackColor = Color.Green;
+                loadCalibrationButton.BackColor = Color.LightGreen;
                 startMeasurementButton.Enabled = true;
                 loadCalibrationButton.Enabled = false;
             }
@@ -95,7 +103,7 @@ namespace BodeApp
             {
                 bode.ShutDown();
                 MessageBox.Show("Disconnected from Bode 100");
-                connectButton.BackColor = SystemColors.Control; // Reset to default color
+                connectButton.BackColor = SystemColors.Control; 
                 disconnectButton.Visible = false;
                 startMeasurementButton.Enabled = false;
                 ResetCalibrationButtons();
@@ -110,49 +118,101 @@ namespace BodeApp
             }
         }
 
-
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
-
         private void startMeasurementButton_Click(object sender, EventArgs e)
         {
-            // Configure the measurement criteria HERE
-            //TODO - find out if anything else is needed here for set up - NEED TO CHECK MEASUREMENTS AT 1KHZ AND 10KHZ
-            // 200 Points to measure
-            adapterMeasurement.ConfigureSweep(900, 1100, 201, SweepMode.Logarithmic); 
+            // Get the duration in minutes from the user
+            if (!int.TryParse(durationTextBox.Text, out measurementDuration))
+            {
+                MessageBox.Show("Please enter a valid number of minutes.");
+                return;
+            }
+
+            startMeasurementButton.BackColor = Color.LightGreen;
+            stopMeasurementButton.Visible = true;
+
+            // Calculate the end time
+            measurementEndTime = DateTime.Now.AddMinutes(measurementDuration);
+
+            // Start the timer
+            measurementTimer.Start();
+        }
+
+        private void stopMeasurementButton_Click(object sender, EventArgs e)
+        {
+            // Stop the timer
+            measurementTimer.Stop();
+            MessageBox.Show("Measurement process completed.");
+            stopMeasurementButton.Visible = false;
+        }
+
+        private void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            if (DateTime.Now >= measurementEndTime)
+            {
+                measurementTimer.Stop();
+                MessageBox.Show("Measurement process completed.");
+                stopMeasurementButton.Visible = false;
+                return;
+            }
+
+            // Perform the measurement
+            ExecuteMeasurement();
+
+        }
+       private void ExecuteMeasurement()
+        {
+            // Configure sweep
+            adapterMeasurement.ConfigureSweep(900, 1100, 201, SweepMode.Logarithmic);
 
             // Start the measurement
             ExecutionState state = adapterMeasurement.ExecuteMeasurement();
             if (state != ExecutionState.Ok)
             {
-                //MessageBox.Show("Measurement failed");
-                MessageBox.Show(state.ToString());
-                bode.ShutDown();
+                this.Invoke((MethodInvoker)delegate
+                {
+                    MessageBox.Show(state.ToString());
+                    bode.ShutDown();
+                });
                 return;
             }
 
-            // TODO - find out how to get the right results - TODO START
+            // Retrieve the measurement frequencies and resistance values
+            double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
+            double[] resistances = adapterMeasurement.Results.Rs();
 
-            double[] frequenciesAt1000 = adapterMeasurement.Results.MeasurementFrequencies;
-            double[] resistanceAt1000 = adapterMeasurement.Results.Rs();
+            // Find index of the frequencies closest to 1000 Hz
+            int index1000Hz = FindClosestIndex(frequencies, 1000);
 
-            resultsListBox.Items.Clear();
-            
-            resultsListBox.Items.Add("Frequency (Hz)  |  Res" );
-            for (int i = 0; i < frequenciesAt1000.Length; i++)
+            // Retrieve resistance values at the closest indices
+            double resistanceAt1000Hz = resistances[index1000Hz];
+
+            // Add the resistance value to the list
+            resistanceAt1000HzList.Add(resistanceAt1000Hz);
+
+            this.Invoke((MethodInvoker)delegate
             {
-                resultsListBox.Items.Add($"{frequenciesAt1000[i]}  |  {resistanceAt1000[i]}");
-            }
-
-            int index1000Hz = FindClosestIndex(frequenciesAt1000, 1000);
-
-            resultsListBox.Items.Add($"Index closest to 1000 Hz: {index1000Hz}");
-            resultsListBox.Items.Add($"Frequency at index {index1000Hz}: {frequenciesAt1000[index1000Hz]} Hz");
-            resultsListBox.Items.Add($"Resistance at index {index1000Hz}: {resistanceAt1000[index1000Hz]} Hz");
-
-
-            // TODO - find out how to get the right results - TODO START
+                resultsListBox.Items.Add($"{measurementCount}. Resistance at index {index1000Hz}: {resistanceAt1000Hz} Ohms");
+            });
 
             exportButton.Enabled = true;
+        }
+        static int FindClosestIndex(double[] array, double target)
+        {
+            int closestIndex = -1;
+            double smallestDifference = double.MaxValue;
+
+            for (int i = 0; i < array.Length; i++)
+            {
+                double difference = Math.Abs(array[i] - target);
+                if (difference < smallestDifference)
+                {
+                    smallestDifference = difference;
+                    closestIndex = i;
+                }
+            }
+
+            return closestIndex;
         }
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - END
@@ -175,6 +235,7 @@ namespace BodeApp
             openCalibrationButton.BackColor = SystemColors.Control;
             shortCalibrationButton.BackColor = SystemColors.Control;
             loadCalibrationButton.BackColor = SystemColors.Control;
+            startMeasurementButton.BackColor = SystemColors.Control;
         }
 
         private bool ValidateInputs()
@@ -188,23 +249,7 @@ namespace BodeApp
                    !string.IsNullOrWhiteSpace(inputTextBox7.Text);
         }
 
-        static int FindClosestIndex(double[] array, double target)
-        {
-            int closestIndex = -1;
-            double smallestDifference = double.MaxValue;
 
-            for (int i = 0; i < array.Length; i++)
-            {
-                double difference = Math.Abs(array[i] - target);
-                if (difference < smallestDifference)
-                {
-                    smallestDifference = difference;
-                    closestIndex = i;
-                }
-            }
-
-            return closestIndex;
-        }
 
         private void SaveToCSV()
         {
@@ -214,9 +259,13 @@ namespace BodeApp
 
             var csvLines = new List<string>
             {
-                "Date, Input 1, Input 2, Input 3, Input 4, Input 5, Input 6, Input 7",
-                $"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {inputTextBox6.Text}, {inputTextBox7.Text}"
+                "Date, Name, Test Name, Sample ID, Room Temp, Humidity, Sample Length, Test Length, Test Temp, 1000s Resistance",
             };
+
+            foreach (double resistance in resistanceAt1000HzList)
+            {
+                csvLines.Add($"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {inputTextBox6.Text}, {inputTextBox7.Text}, {inputTextBox8.Text}, {resistance}");
+            }
 
             File.WriteAllLines(filePath, csvLines);
 

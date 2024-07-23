@@ -20,6 +20,7 @@
         private System.Windows.Forms.TextBox inputTextBox5;
         private System.Windows.Forms.TextBox inputTextBox6;
         private System.Windows.Forms.TextBox inputTextBox7;
+        private System.Windows.Forms.TextBox inputTextBox8;
         private System.Windows.Forms.Label inputLabel1;
         private System.Windows.Forms.Label inputLabel2;
         private System.Windows.Forms.Label inputLabel3;
@@ -27,8 +28,12 @@
         private System.Windows.Forms.Label inputLabel5;
         private System.Windows.Forms.Label inputLabel6;
         private System.Windows.Forms.Label inputLabel7;
+        private System.Windows.Forms.Label inputLabel8;
         private System.Windows.Forms.TextBox dateTimeTextBox;
         private System.Windows.Forms.ListBox resultsListBox;
+        private System.Windows.Forms.TextBox durationTextBox;
+        private System.Windows.Forms.Label durationLabel;
+        private System.Windows.Forms.Button stopMeasurementButton;
 
 
         protected override void Dispose(bool disposing)
@@ -50,6 +55,7 @@
         {
             connectButton = new Button();
             startMeasurementButton = new Button();
+            stopMeasurementButton = new Button();
             exportButton = new Button();
             openCalibrationButton = new Button();
             shortCalibrationButton = new Button();
@@ -61,6 +67,7 @@
             inputTextBox5 = new TextBox();
             inputTextBox6 = new TextBox();
             inputTextBox7 = new TextBox();
+            inputTextBox8 = new TextBox();
             inputLabel1 = new Label();
             inputLabel2 = new Label();
             inputLabel3 = new Label();
@@ -68,19 +75,22 @@
             inputLabel5 = new Label();
             inputLabel6 = new Label();
             inputLabel7 = new Label();
+            inputLabel8 = new Label();
             dateTimeTextBox = new TextBox();
             disconnectButton = new Button();
             resultsListBox = new ListBox();
+            durationTextBox = new TextBox();
+            durationLabel = new Label();
             SuspendLayout();
             // 
             // connectButton
             // 
             connectButton.Enabled = false;
-            connectButton.Location = new Point(14, 417);
+            connectButton.Location = new Point(13, 464);
             connectButton.Margin = new Padding(4, 3, 4, 3);
             connectButton.Name = "connectButton";
             connectButton.Size = new Size(175, 27);
-            connectButton.TabIndex = 15;
+            connectButton.TabIndex = 9;
             connectButton.Text = "Connect";
             connectButton.UseVisualStyleBackColor = true;
             connectButton.Click += connectButton_Click;
@@ -88,23 +98,36 @@
             // startMeasurementButton
             // 
             startMeasurementButton.Enabled = false;
-            startMeasurementButton.Location = new Point(248, 481);
+            startMeasurementButton.Location = new Point(248, 508);
             startMeasurementButton.Margin = new Padding(4, 3, 4, 3);
             startMeasurementButton.Name = "startMeasurementButton";
             startMeasurementButton.Size = new Size(175, 27);
-            startMeasurementButton.TabIndex = 16;
+            startMeasurementButton.TabIndex = 14;
             startMeasurementButton.Text = "Start Measurement";
             startMeasurementButton.UseVisualStyleBackColor = true;
             startMeasurementButton.Click += startMeasurementButton_Click;
             // 
+            // stopMeasurementButton
+            // 
+            stopMeasurementButton.Enabled = false;
+            stopMeasurementButton.Location = new Point(248, 543);
+            stopMeasurementButton.Margin = new Padding(4, 3, 4, 3);
+            stopMeasurementButton.Name = "stopMeasurementButton";
+            stopMeasurementButton.Size = new Size(175, 27);
+            stopMeasurementButton.TabIndex = 15;
+            stopMeasurementButton.Text = "Stop Measurement";
+            stopMeasurementButton.UseVisualStyleBackColor = true;
+            stopMeasurementButton.Visible = false;
+            stopMeasurementButton.Click += stopMeasurementButton_Click;
+            // 
             // exportButton
             // 
             exportButton.Enabled = false;
-            exportButton.Location = new Point(469, 481);
+            exportButton.Location = new Point(489, 471);
             exportButton.Margin = new Padding(4, 3, 4, 3);
             exportButton.Name = "exportButton";
             exportButton.Size = new Size(175, 27);
-            exportButton.TabIndex = 17;
+            exportButton.TabIndex = 16;
             exportButton.Text = "Export to CSV";
             exportButton.UseVisualStyleBackColor = true;
             exportButton.Click += exportButton_Click;
@@ -112,10 +135,10 @@
             // openCalibrationButton
             // 
             openCalibrationButton.Enabled = false;
-            openCalibrationButton.Location = new Point(28, 451);
+            openCalibrationButton.Location = new Point(28, 497);
             openCalibrationButton.Name = "openCalibrationButton";
             openCalibrationButton.Size = new Size(150, 23);
-            openCalibrationButton.TabIndex = 20;
+            openCalibrationButton.TabIndex = 10;
             openCalibrationButton.Text = "Open Calibration";
             openCalibrationButton.UseVisualStyleBackColor = true;
             openCalibrationButton.Click += openCalibrationButton_Click;
@@ -123,10 +146,10 @@
             // shortCalibrationButton
             // 
             shortCalibrationButton.Enabled = false;
-            shortCalibrationButton.Location = new Point(28, 483);
+            shortCalibrationButton.Location = new Point(28, 526);
             shortCalibrationButton.Name = "shortCalibrationButton";
             shortCalibrationButton.Size = new Size(150, 23);
-            shortCalibrationButton.TabIndex = 21;
+            shortCalibrationButton.TabIndex = 11;
             shortCalibrationButton.Text = "Short Calibration";
             shortCalibrationButton.UseVisualStyleBackColor = true;
             shortCalibrationButton.Click += shortCalibrationButton_Click;
@@ -134,10 +157,10 @@
             // loadCalibrationButton
             // 
             loadCalibrationButton.Enabled = false;
-            loadCalibrationButton.Location = new Point(28, 512);
+            loadCalibrationButton.Location = new Point(28, 555);
             loadCalibrationButton.Name = "loadCalibrationButton";
             loadCalibrationButton.Size = new Size(150, 23);
-            loadCalibrationButton.TabIndex = 22;
+            loadCalibrationButton.TabIndex = 12;
             loadCalibrationButton.Text = "Load Calibration";
             loadCalibrationButton.UseVisualStyleBackColor = true;
             loadCalibrationButton.Click += loadCalibrationButton_Click;
@@ -148,7 +171,7 @@
             inputTextBox1.Margin = new Padding(4, 3, 4, 3);
             inputTextBox1.Name = "inputTextBox1";
             inputTextBox1.Size = new Size(174, 23);
-            inputTextBox1.TabIndex = 2;
+            inputTextBox1.TabIndex = 1;
             inputTextBox1.TextChanged += inputTextBox_TextChanged;
             // 
             // inputTextBox2
@@ -157,7 +180,7 @@
             inputTextBox2.Margin = new Padding(4, 3, 4, 3);
             inputTextBox2.Name = "inputTextBox2";
             inputTextBox2.Size = new Size(174, 23);
-            inputTextBox2.TabIndex = 4;
+            inputTextBox2.TabIndex = 2;
             inputTextBox2.TextChanged += inputTextBox_TextChanged;
             // 
             // inputTextBox3
@@ -166,7 +189,7 @@
             inputTextBox3.Margin = new Padding(4, 3, 4, 3);
             inputTextBox3.Name = "inputTextBox3";
             inputTextBox3.Size = new Size(174, 23);
-            inputTextBox3.TabIndex = 6;
+            inputTextBox3.TabIndex = 3;
             inputTextBox3.TextChanged += inputTextBox_TextChanged;
             // 
             // inputTextBox4
@@ -175,7 +198,7 @@
             inputTextBox4.Margin = new Padding(4, 3, 4, 3);
             inputTextBox4.Name = "inputTextBox4";
             inputTextBox4.Size = new Size(174, 23);
-            inputTextBox4.TabIndex = 8;
+            inputTextBox4.TabIndex = 4;
             inputTextBox4.TextChanged += inputTextBox_TextChanged;
             // 
             // inputTextBox5
@@ -184,7 +207,7 @@
             inputTextBox5.Margin = new Padding(4, 3, 4, 3);
             inputTextBox5.Name = "inputTextBox5";
             inputTextBox5.Size = new Size(174, 23);
-            inputTextBox5.TabIndex = 10;
+            inputTextBox5.TabIndex = 5;
             inputTextBox5.TextChanged += inputTextBox_TextChanged;
             // 
             // inputTextBox6
@@ -193,7 +216,7 @@
             inputTextBox6.Margin = new Padding(4, 3, 4, 3);
             inputTextBox6.Name = "inputTextBox6";
             inputTextBox6.Size = new Size(174, 23);
-            inputTextBox6.TabIndex = 12;
+            inputTextBox6.TabIndex = 6;
             inputTextBox6.TextChanged += inputTextBox_TextChanged;
             // 
             // inputTextBox7
@@ -202,8 +225,17 @@
             inputTextBox7.Margin = new Padding(4, 3, 4, 3);
             inputTextBox7.Name = "inputTextBox7";
             inputTextBox7.Size = new Size(174, 23);
-            inputTextBox7.TabIndex = 14;
+            inputTextBox7.TabIndex = 7;
             inputTextBox7.TextChanged += inputTextBox_TextChanged;
+            // 
+            // inputTextBox8
+            // 
+            inputTextBox8.Location = new Point(14, 435);
+            inputTextBox8.Margin = new Padding(4, 3, 4, 3);
+            inputTextBox8.Name = "inputTextBox8";
+            inputTextBox8.Size = new Size(174, 23);
+            inputTextBox8.TabIndex = 8;
+            inputTextBox8.TextChanged += inputTextBox_TextChanged;
             // 
             // inputLabel1
             // 
@@ -213,7 +245,7 @@
             inputLabel1.Name = "inputLabel1";
             inputLabel1.Size = new Size(47, 15);
             inputLabel1.TabIndex = 1;
-            inputLabel1.Text = "Input 1:";
+            inputLabel1.Text = "Name:";
             // 
             // inputLabel2
             // 
@@ -223,7 +255,7 @@
             inputLabel2.Name = "inputLabel2";
             inputLabel2.Size = new Size(47, 15);
             inputLabel2.TabIndex = 3;
-            inputLabel2.Text = "Input 2:";
+            inputLabel2.Text = "Test Name:";
             // 
             // inputLabel3
             // 
@@ -233,7 +265,7 @@
             inputLabel3.Name = "inputLabel3";
             inputLabel3.Size = new Size(47, 15);
             inputLabel3.TabIndex = 5;
-            inputLabel3.Text = "Input 3:";
+            inputLabel3.Text = "Sample ID:";
             // 
             // inputLabel4
             // 
@@ -243,7 +275,7 @@
             inputLabel4.Name = "inputLabel4";
             inputLabel4.Size = new Size(47, 15);
             inputLabel4.TabIndex = 7;
-            inputLabel4.Text = "Input 4:";
+            inputLabel4.Text = "Room Temp:";
             // 
             // inputLabel5
             // 
@@ -253,7 +285,7 @@
             inputLabel5.Name = "inputLabel5";
             inputLabel5.Size = new Size(47, 15);
             inputLabel5.TabIndex = 9;
-            inputLabel5.Text = "Input 5:";
+            inputLabel5.Text = "Humidity:";
             // 
             // inputLabel6
             // 
@@ -263,7 +295,7 @@
             inputLabel6.Name = "inputLabel6";
             inputLabel6.Size = new Size(47, 15);
             inputLabel6.TabIndex = 11;
-            inputLabel6.Text = "Input 6:";
+            inputLabel6.Text = "Sample Length:";
             // 
             // inputLabel7
             // 
@@ -273,7 +305,17 @@
             inputLabel7.Name = "inputLabel7";
             inputLabel7.Size = new Size(47, 15);
             inputLabel7.TabIndex = 13;
-            inputLabel7.Text = "Input 7:";
+            inputLabel7.Text = "Test Length:";
+            // 
+            // inputLabel8
+            // 
+            inputLabel8.AutoSize = true;
+            inputLabel8.Location = new Point(14, 416);
+            inputLabel8.Margin = new Padding(4, 0, 4, 0);
+            inputLabel8.Name = "inputLabel8";
+            inputLabel8.Size = new Size(47, 15);
+            inputLabel8.TabIndex = 13;
+            inputLabel8.Text = "Test Temp:";
             // 
             // dateTimeTextBox
             // 
@@ -286,7 +328,7 @@
             // 
             // disconnectButton
             // 
-            disconnectButton.Location = new Point(489, 526);
+            disconnectButton.Location = new Point(499, 543);
             disconnectButton.Margin = new Padding(4, 3, 4, 3);
             disconnectButton.Name = "disconnectButton";
             disconnectButton.Size = new Size(175, 27);
@@ -305,12 +347,30 @@
             resultsListBox.Size = new Size(396, 454);
             resultsListBox.TabIndex = 19;
             // 
+            // durationTextBox
+            // 
+            durationTextBox.Location = new Point(345, 479);
+            durationTextBox.Name = "durationTextBox";
+            durationTextBox.Size = new Size(100, 23);
+            durationTextBox.TabIndex = 13;
+            // 
+            // durationLabel
+            // 
+            durationLabel.AutoSize = true;
+            durationLabel.Location = new Point(229, 483);
+            durationLabel.Name = "durationLabel";
+            durationLabel.Size = new Size(110, 15);
+            durationLabel.TabIndex = 0;
+            durationLabel.Text = "Duration (minutes):";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(677, 565);
+            ClientSize = new Size(690, 590);
             Controls.Add(dateTimeTextBox);
+            Controls.Add(inputLabel8);
+            Controls.Add(inputTextBox8);
             Controls.Add(inputLabel7);
             Controls.Add(inputTextBox7);
             Controls.Add(inputLabel6);
@@ -326,6 +386,7 @@
             Controls.Add(inputLabel1);
             Controls.Add(inputTextBox1);
             Controls.Add(startMeasurementButton);
+            Controls.Add(stopMeasurementButton);
             Controls.Add(connectButton);
             Controls.Add(exportButton);
             Controls.Add(disconnectButton);
@@ -333,6 +394,8 @@
             Controls.Add(shortCalibrationButton);
             Controls.Add(loadCalibrationButton);
             Controls.Add(resultsListBox);
+            Controls.Add(durationTextBox);
+            Controls.Add(durationLabel);
             Margin = new Padding(4, 3, 4, 3);
             Name = "MainForm";
             Text = "Bode Automation Interface";
