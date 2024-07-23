@@ -218,7 +218,7 @@ namespace BodeApp
             // Find index of the frequencies closest to 1000 Hz
             int index1000Hz = FindClosestIndex(frequencies, 1000);
             lengthOfSample = inputTextBox6.Text;
-            testTemp = inputLabel7.Text;
+            testTemp = inputTextBox7.Text;
 
             // Retrieve resistance values at the closest indices
             double resistanceAt1000Hz = resistances[index1000Hz];
