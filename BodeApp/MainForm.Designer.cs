@@ -124,10 +124,10 @@
             // exportButton
             // 
             exportButton.Enabled = false;
-            exportButton.Location = new Point(649, 470);
+            exportButton.Location = new Point(681, 470);
             exportButton.Margin = new Padding(4, 3, 4, 3);
             exportButton.Name = "exportButton";
-            exportButton.Size = new Size(120, 27);
+            exportButton.Size = new Size(88, 27);
             exportButton.TabIndex = 16;
             exportButton.Text = "Export to CSV";
             exportButton.UseVisualStyleBackColor = true;
@@ -341,10 +341,10 @@
             // 
             // disconnectButton
             // 
-            disconnectButton.Location = new Point(697, 555);
+            disconnectButton.Location = new Point(701, 555);
             disconnectButton.Margin = new Padding(4, 3, 4, 3);
             disconnectButton.Name = "disconnectButton";
-            disconnectButton.Size = new Size(80, 27);
+            disconnectButton.Size = new Size(76, 27);
             disconnectButton.TabIndex = 18;
             disconnectButton.Text = "Disconnect";
             disconnectButton.UseVisualStyleBackColor = true;
@@ -354,10 +354,10 @@
             // resultsListBox
             // 
             resultsListBox.ItemHeight = 15;
-            resultsListBox.Location = new Point(229, 10);
+            resultsListBox.Location = new Point(207, 10);
             resultsListBox.Margin = new Padding(4, 3, 4, 3);
             resultsListBox.Name = "resultsListBox";
-            resultsListBox.Size = new Size(540, 454);
+            resultsListBox.Size = new Size(562, 454);
             resultsListBox.TabIndex = 19;
             // 
             // durationTextBox
