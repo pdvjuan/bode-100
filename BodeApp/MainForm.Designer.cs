@@ -396,7 +396,7 @@
             Controls.Add(inputTextBox2);
             Controls.Add(inputLabel1);
             Controls.Add(inputTextBox1);
-            Controls.Add(resetButton);
+            //Controls.Add(resetButton);
             Controls.Add(startMeasurementButton);
             Controls.Add(stopMeasurementButton);
             Controls.Add(connectButton);

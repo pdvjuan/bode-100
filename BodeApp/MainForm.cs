@@ -163,7 +163,11 @@ namespace BodeApp
             {
                 // Start the measurement process on a separate thread
                 await Task.Run(() => RunMeasurementLoop(numberOfIntervals, cts.Token));
-                MessageBox.Show("Measurement process completed.");
+                if (ValidateInputs())
+                {
+                    SaveToCSVAuto();
+                }
+                MessageBox.Show("Measurement process completed");
             }
             catch (OperationCanceledException)
             {
@@ -181,6 +185,7 @@ namespace BodeApp
 
         private void stopMeasurementButton_Click(object sender, EventArgs e)
         {
+            SaveToCSVAuto();
             cts.Cancel();
         }
 
@@ -289,12 +294,44 @@ namespace BodeApp
                    !string.IsNullOrWhiteSpace(inputTextBox7.Text);
         }
 
+        private void SaveToCSVAuto()
+        {
+            // Format the current date and time for use in the filename
+            string timestamp = DateTime.Now.ToString("yy-MM-dd HH_mm_ss");
+            string filePath = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
 
+            var csvLines = new List<string>
+            {
+                "Date, Name, Test Name, Sample ID, Room Temp, Humidity, Sample Length, Test Length, Test Temp, 1000s Resistance",
+            };
+
+            // Ensure both lists have the same length
+            if (resistanceAt1000HzList.Count != lengthOfSampleList.Count)
+            {
+                MessageBox.Show("The resistance list and sample size list do not have the same number of elements.");
+                return;
+            }
+
+            // Iterate through both lists using a for loop
+            for (int i = 0; i < resistanceAt1000HzList.Count; i++)
+            {
+                double resistance = resistanceAt1000HzList[i];
+                string sampleSize = lengthOfSampleList[i];
+                string testTemperature = testTempList[i];
+                string timePoint = timeList[i];
+
+                csvLines.Add($"{timePoint}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
+            }
+
+            File.WriteAllLines(filePath, csvLines);
+
+            //MessageBox.Show($"Data has been exported to {filePath}");
+        }
 
         private void SaveToCSV()
         {
             // Format the current date and time for use in the filename
-            string timestamp = DateTime.Now.ToString("yy-MM-dd");
+            string timestamp = DateTime.Now.ToString("yy-MM-dd HH_mm_ss");
             string filePath = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
 
             var csvLines = new List<string>
