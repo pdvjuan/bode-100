@@ -30,7 +30,8 @@ This is a Windows Forms application developed in C# using Visual Studio 2022.
 ## Running the Application
 
 1. In Visual Studio, set the `MainForm` as the startup form.
-2. Press `F5` or click the "Start" button in the toolbar to run the application.
+2. Make sure to change the customPath in MainForm.cs and in CSV Functions uncomment out the sections of code stated in the function
+3. Press `F5` or click the "Start" button in the toolbar to run the application.
 
 ## Configuration
 

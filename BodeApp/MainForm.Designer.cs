@@ -123,7 +123,7 @@
             // 
             // exportButton
             // 
-            exportButton.Enabled = true;
+            exportButton.Enabled = false;
             exportButton.Location = new Point(649, 470);
             exportButton.Margin = new Padding(4, 3, 4, 3);
             exportButton.Name = "exportButton";

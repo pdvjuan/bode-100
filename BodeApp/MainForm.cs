@@ -27,6 +27,8 @@ namespace BodeApp
         private List<string> timeList = new List<string>();
         private string testTemp = "";
         private CancellationTokenSource cts;
+        //Enter file path below
+        private string customPath = "";
 
         public MainForm()
         {
@@ -298,7 +300,7 @@ namespace BodeApp
         {
             // Format the current date and time for use in the filename
             string timestamp = DateTime.Now.ToString("yy-MM-dd HH_mm_ss");
-            string filePath = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
+            string fileName = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
 
             // Retrieve the inputTextBox values once before the loop
             string userName = inputTextBox1.Text;
@@ -330,16 +332,18 @@ namespace BodeApp
                 csvLines.Add($"{timePoint}, {userName}, {testName}, {sampleID}, {roomTemp}, {humidity}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
             }
 
-            File.WriteAllLines(filePath, csvLines);
+            //Code Below can be enable to give the program a custom path to save csv (BECAREFUL if using onedrive due to conectivity issues)
+            //string filePath = Path.Combine(customPath,fileName);
 
-            //MessageBox.Show($"Data has been exported to {filePath}");
+            //Update fileName to filePath if setting up custom path
+            File.WriteAllLines(fileName, csvLines);
         }
 
         private void SaveToCSV()
         {
             // Format the current date and time for use in the filename
             string timestamp = DateTime.Now.ToString("yy-MM-dd HH_mm_ss");
-            string filePath = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
+            string fileName = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
 
             // Retrieve the inputTextBox values once before the loop
             string userName = inputTextBox1.Text;
@@ -371,23 +375,19 @@ namespace BodeApp
                 csvLines.Add($"{timePoint}, {userName}, {testName}, {sampleID}, {roomTemp}, {humidity}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
             }
 
-            File.WriteAllLines(filePath, csvLines);
+            //Code Below can be enable to give the program a custom path to save csv (BECAREFUL if using onedrive due to conectivity issues)
+            //string filePath = Path.Combine(customPath,fileName);
 
-            MessageBox.Show($"Data has been exported to {filePath}");
+            //Update fileName to filePath if setting up custom path
+            File.WriteAllLines(fileName, csvLines);
+
+            //Update fileName to filePath if setting up custom path
+            MessageBox.Show($"Data has been exported to {fileName}");
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             bode?.ShutDown();
         } 
-        
-        //Example of a custom path
-        //private void testCSV()
-        //{ 
-        //    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-        //    string customPath = @"C:\Users\juanp\Phoenix DeVentures\Phoenix - Employee - Documents\Juan Portillo";
-        //    string fileName = $"Report_test-{inputTextBox3.Text}.csv";
-        //    string filePath = Path.Combine(customPath,fileName);
-        //}
     }
 }
