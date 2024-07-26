@@ -99,7 +99,7 @@
             // startMeasurementButton
             // 
             startMeasurementButton.Enabled = false;
-            startMeasurementButton.Location = new Point(248, 508);
+            startMeasurementButton.Location = new Point(229, 497);
             startMeasurementButton.Margin = new Padding(4, 3, 4, 3);
             startMeasurementButton.Name = "startMeasurementButton";
             startMeasurementButton.Size = new Size(175, 27);
@@ -111,10 +111,10 @@
             // stopMeasurementButton
             // 
             stopMeasurementButton.Enabled = false;
-            stopMeasurementButton.Location = new Point(248, 543);
+            stopMeasurementButton.Location = new Point(412, 497);
             stopMeasurementButton.Margin = new Padding(4, 3, 4, 3);
             stopMeasurementButton.Name = "stopMeasurementButton";
-            stopMeasurementButton.Size = new Size(175, 27);
+            stopMeasurementButton.Size = new Size(125, 27);
             stopMeasurementButton.TabIndex = 15;
             stopMeasurementButton.Text = "Stop Measurement";
             stopMeasurementButton.UseVisualStyleBackColor = true;
@@ -123,11 +123,11 @@
             // 
             // exportButton
             // 
-            exportButton.Enabled = false;
-            exportButton.Location = new Point(502, 508);
+            exportButton.Enabled = true;
+            exportButton.Location = new Point(649, 470);
             exportButton.Margin = new Padding(4, 3, 4, 3);
             exportButton.Name = "exportButton";
-            exportButton.Size = new Size(175, 27);
+            exportButton.Size = new Size(120, 27);
             exportButton.TabIndex = 16;
             exportButton.Text = "Export to CSV";
             exportButton.UseVisualStyleBackColor = true;
@@ -168,14 +168,14 @@
             // 
             // resetButton
             // 
+            resetButton.BackColor = Color.Red;
+            resetButton.ForeColor = Color.White;
             resetButton.Location = new Point(528, 466);
             resetButton.Name = "resetButton";
             resetButton.Size = new Size(150, 23);
             resetButton.TabIndex = 19;
             resetButton.Text = "Reset";
-            //resetButton.UseVisualStyleBackColor = true;
-            resetButton.BackColor = Color.Red;
-            resetButton.ForeColor = Color.White;
+            resetButton.UseVisualStyleBackColor = false;
             resetButton.Click += resetButton_Click;
             // 
             // inputTextBox1
@@ -341,10 +341,10 @@
             // 
             // disconnectButton
             // 
-            disconnectButton.Location = new Point(502, 553);
+            disconnectButton.Location = new Point(697, 555);
             disconnectButton.Margin = new Padding(4, 3, 4, 3);
             disconnectButton.Name = "disconnectButton";
-            disconnectButton.Size = new Size(175, 27);
+            disconnectButton.Size = new Size(80, 27);
             disconnectButton.TabIndex = 18;
             disconnectButton.Text = "Disconnect";
             disconnectButton.UseVisualStyleBackColor = true;
@@ -362,7 +362,7 @@
             // 
             // durationTextBox
             // 
-            durationTextBox.Location = new Point(345, 479);
+            durationTextBox.Location = new Point(345, 470);
             durationTextBox.Name = "durationTextBox";
             durationTextBox.Size = new Size(100, 23);
             durationTextBox.TabIndex = 13;
@@ -370,7 +370,7 @@
             // durationLabel
             // 
             durationLabel.AutoSize = true;
-            durationLabel.Location = new Point(229, 483);
+            durationLabel.Location = new Point(229, 476);
             durationLabel.Name = "durationLabel";
             durationLabel.Size = new Size(110, 15);
             durationLabel.TabIndex = 0;
@@ -396,7 +396,6 @@
             Controls.Add(inputTextBox2);
             Controls.Add(inputLabel1);
             Controls.Add(inputTextBox1);
-            //Controls.Add(resetButton);
             Controls.Add(startMeasurementButton);
             Controls.Add(stopMeasurementButton);
             Controls.Add(connectButton);

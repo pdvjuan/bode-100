@@ -167,11 +167,11 @@ namespace BodeApp
                 {
                     SaveToCSVAuto();
                 }
-                MessageBox.Show("Measurement process completed");
+                MessageBox.Show("Measurement process completed and exported.");
             }
             catch (OperationCanceledException)
             {
-                MessageBox.Show("Measurement process was canceled.");
+                MessageBox.Show("Measurement process was canceled and exported.");
                 stopMeasurementButton.Visible = false;
                 startMeasurementButton.BackColor = SystemColors.Control;
             }
@@ -300,6 +300,13 @@ namespace BodeApp
             string timestamp = DateTime.Now.ToString("yy-MM-dd HH_mm_ss");
             string filePath = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
 
+            // Retrieve the inputTextBox values once before the loop
+            string userName = inputTextBox1.Text;
+            string testName = inputTextBox2.Text;
+            string sampleID = inputTextBox3.Text;
+            string roomTemp = inputTextBox4.Text;
+            string humidity = inputTextBox5.Text;
+
             var csvLines = new List<string>
             {
                 "Date, Name, Test Name, Sample ID, Room Temp, Humidity, Sample Length, Test Length, Test Temp, 1000s Resistance",
@@ -320,7 +327,7 @@ namespace BodeApp
                 string testTemperature = testTempList[i];
                 string timePoint = timeList[i];
 
-                csvLines.Add($"{timePoint}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
+                csvLines.Add($"{timePoint}, {userName}, {testName}, {sampleID}, {roomTemp}, {humidity}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
             }
 
             File.WriteAllLines(filePath, csvLines);
@@ -334,6 +341,13 @@ namespace BodeApp
             string timestamp = DateTime.Now.ToString("yy-MM-dd HH_mm_ss");
             string filePath = $"Report_{inputTextBox3.Text}_{timestamp}.csv";
 
+            // Retrieve the inputTextBox values once before the loop
+            string userName = inputTextBox1.Text;
+            string testName = inputTextBox2.Text;
+            string sampleID = inputTextBox3.Text;
+            string roomTemp = inputTextBox4.Text;
+            string humidity = inputTextBox5.Text;
+
             var csvLines = new List<string>
             {
                 "Date, Name, Test Name, Sample ID, Room Temp, Humidity, Sample Length, Test Length, Test Temp, 1000s Resistance",
@@ -354,17 +368,26 @@ namespace BodeApp
                 string testTemperature = testTempList[i];
                 string timePoint = timeList[i];
 
-                csvLines.Add($"{timePoint}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
+                csvLines.Add($"{timePoint}, {userName}, {testName}, {sampleID}, {roomTemp}, {humidity}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
             }
 
             File.WriteAllLines(filePath, csvLines);
 
             MessageBox.Show($"Data has been exported to {filePath}");
         }
-        
+
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             bode?.ShutDown();
-        }
+        } 
+        
+        //Example of a custom path
+        //private void testCSV()
+        //{ 
+        //    string desktopPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        //    string customPath = @"C:\Users\juanp\Phoenix DeVentures\Phoenix - Employee - Documents\Juan Portillo";
+        //    string fileName = $"Report_test-{inputTextBox3.Text}.csv";
+        //    string filePath = Path.Combine(customPath,fileName);
+        //}
     }
 }
