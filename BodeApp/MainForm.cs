@@ -24,6 +24,7 @@ namespace BodeApp
         private List<string> lengthOfSampleList = new List<string>();
         private string lengthOfSample = "";
         private List<string> testTempList = new List<string>();
+        private List<string> timeList = new List<string>();
         private string testTemp = "";
         private CancellationTokenSource cts;
 
@@ -219,6 +220,7 @@ namespace BodeApp
             int index1000Hz = FindClosestIndex(frequencies, 1000);
             lengthOfSample = inputTextBox6.Text;
             testTemp = inputTextBox7.Text;
+            string timeOfMeasurement = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             // Retrieve resistance values at the closest indices
             double resistanceAt1000Hz = resistances[index1000Hz];
@@ -227,10 +229,11 @@ namespace BodeApp
             resistanceAt1000HzList.Add(resistanceAt1000Hz);
             lengthOfSampleList.Add(lengthOfSample);
             testTempList.Add(testTemp);
+            timeList.Add(timeOfMeasurement);
 
             this.Invoke((MethodInvoker)delegate
             {
-                resultsListBox.Items.Add($"{measurementCount}. SampleSize: {lengthOfSample}. Temp {testTemp}. Resistance at index {index1000Hz}: {resistanceAt1000Hz} Ohms");
+                resultsListBox.Items.Add($"{measurementCount}. Sample: {lengthOfSample}. Temp {testTemp}. Res at index {index1000Hz}: {resistanceAt1000Hz} Ohms. Time: {timeOfMeasurement}");
             });
 
             exportButton.Enabled = true;
@@ -312,8 +315,9 @@ namespace BodeApp
                 double resistance = resistanceAt1000HzList[i];
                 string sampleSize = lengthOfSampleList[i];
                 string testTemperature = testTempList[i];
+                string timePoint = timeList[i];
 
-                csvLines.Add($"{dateTimeTextBox.Text}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
+                csvLines.Add($"{timePoint}, {inputTextBox1.Text}, {inputTextBox2.Text}, {inputTextBox3.Text}, {inputTextBox4.Text}, {inputTextBox5.Text}, {sampleSize}, {measurementDuration}, {testTemperature}, {resistance}");
             }
 
             File.WriteAllLines(filePath, csvLines);

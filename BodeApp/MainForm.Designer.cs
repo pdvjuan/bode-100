@@ -357,7 +357,7 @@
             resultsListBox.Location = new Point(229, 10);
             resultsListBox.Margin = new Padding(4, 3, 4, 3);
             resultsListBox.Name = "resultsListBox";
-            resultsListBox.Size = new Size(448, 454);
+            resultsListBox.Size = new Size(540, 454);
             resultsListBox.TabIndex = 19;
             // 
             // durationTextBox
@@ -380,7 +380,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(690, 590);
+            ClientSize = new Size(790, 590);
             Controls.Add(dateTimeTextBox);
             Controls.Add(inputLabel7);
             Controls.Add(inputTextBox7);
