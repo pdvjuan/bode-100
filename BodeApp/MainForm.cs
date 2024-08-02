@@ -28,7 +28,7 @@ namespace BodeApp
         private string testTemp = "";
         private CancellationTokenSource cts;
         //Enter file path below
-        private string customPath = "";
+        private string customPath = @"C:\Users\avend\Documents\PathRightED";
 
         public MainForm()
         {
@@ -198,7 +198,7 @@ namespace BodeApp
                 token.ThrowIfCancellationRequested();
                 ExecuteMeasurement();
                 // 10000 = 10 seconds
-                Thread.Sleep(10000);
+                Thread.Sleep(8000);
             }
         }
         private void ExecuteMeasurement()
@@ -333,10 +333,10 @@ namespace BodeApp
             }
 
             //Code Below can be enable to give the program a custom path to save csv (BECAREFUL if using onedrive due to conectivity issues)
-            //string filePath = Path.Combine(customPath,fileName);
+            string filePath = Path.Combine(customPath,fileName);
 
             //Update fileName to filePath if setting up custom path
-            File.WriteAllLines(fileName, csvLines);
+            File.WriteAllLines(filePath, csvLines);
         }
 
         private void SaveToCSV()
@@ -376,13 +376,13 @@ namespace BodeApp
             }
 
             //Code Below can be enable to give the program a custom path to save csv (BECAREFUL if using onedrive due to conectivity issues)
-            //string filePath = Path.Combine(customPath,fileName);
+            string filePath = Path.Combine(customPath,fileName);
 
             //Update fileName to filePath if setting up custom path
-            File.WriteAllLines(fileName, csvLines);
+            File.WriteAllLines(filePath, csvLines);
 
             //Update fileName to filePath if setting up custom path
-            MessageBox.Show($"Data has been exported to {fileName}");
+            MessageBox.Show($"Data has been exported to {filePath}");
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
