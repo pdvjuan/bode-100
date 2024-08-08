@@ -169,12 +169,13 @@
             // resetButton
             // 
             resetButton.BackColor = Color.Red;
+            resetButton.Enabled = false;
             resetButton.ForeColor = Color.White;
-            resetButton.Location = new Point(528, 466);
+            resetButton.Location = new Point(620, 557);
             resetButton.Name = "resetButton";
-            resetButton.Size = new Size(150, 23);
+            resetButton.Size = new Size(47, 23);
             resetButton.TabIndex = 19;
-            resetButton.Text = "Reset";
+            resetButton.Text = "Clear";
             resetButton.UseVisualStyleBackColor = false;
             resetButton.Click += resetButton_Click;
             // 
@@ -403,6 +404,7 @@
             Controls.Add(disconnectButton);
             Controls.Add(openCalibrationButton);
             Controls.Add(shortCalibrationButton);
+            Controls.Add(resetButton);
             Controls.Add(loadCalibrationButton);
             Controls.Add(resultsListBox);
             Controls.Add(durationTextBox);

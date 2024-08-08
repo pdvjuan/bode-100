@@ -130,15 +130,10 @@ namespace BodeApp
         private void resetButton_Click(object sender, EventArgs e)
         {
             resultsListBox.Items.Clear();
-            durationTextBox.Text = string.Empty;
-            measurementCount = 0;
             resistanceAt1000HzList.Clear();
             lengthOfSampleList.Clear();
             testTempList.Clear();
-            // Set the TextBox to the current date and time
-            dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            startMeasurementButton.BackColor = SystemColors.Control;
-            stopMeasurementButton.Visible = false;
+            timeList.Clear();
         }
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
@@ -152,6 +147,7 @@ namespace BodeApp
             }
 
             startMeasurementButton.BackColor = Color.LightGreen;
+            resetButton.Enabled = false;
             stopMeasurementButton.Visible = true;
             stopMeasurementButton.Enabled = true;
 
@@ -170,17 +166,20 @@ namespace BodeApp
                     SaveToCSVAuto();
                 }
                 MessageBox.Show("Measurement process completed and exported.");
+                resetButton.Enabled = true;
             }
             catch (OperationCanceledException)
             {
                 MessageBox.Show("Measurement process was canceled and exported.");
                 stopMeasurementButton.Visible = false;
                 startMeasurementButton.BackColor = SystemColors.Control;
+                resetButton.Enabled = true;
             }
             finally
             {
                 stopMeasurementButton.Visible = false;
                 startMeasurementButton.BackColor = SystemColors.Control;
+                resetButton.Enabled = true;
             }
 
         }
