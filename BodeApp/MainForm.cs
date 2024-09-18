@@ -28,7 +28,11 @@ namespace BodeApp
         private string testTemp = "";
         private CancellationTokenSource cts;
         //Enter file path below
+<<<<<<< HEAD
         private string customPath = "";
+=======
+        private string customPath = @"C:\Users\avend\Documents\PathRightED";
+>>>>>>> parent of 8a7f4b5 (new mux code)
 
         public MainForm()
         {
@@ -130,6 +134,7 @@ namespace BodeApp
         private void resetButton_Click(object sender, EventArgs e)
         {
             resultsListBox.Items.Clear();
+<<<<<<< HEAD
             durationTextBox.Text = string.Empty;
             measurementCount = 0;
             resistanceAt1000HzList.Clear();
@@ -139,6 +144,12 @@ namespace BodeApp
             dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             startMeasurementButton.BackColor = SystemColors.Control;
             stopMeasurementButton.Visible = false;
+=======
+            resistanceAt1000HzList.Clear();
+            lengthOfSampleList.Clear();
+            testTempList.Clear();
+            timeList.Clear();
+>>>>>>> parent of 8a7f4b5 (new mux code)
         }
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
@@ -176,6 +187,10 @@ namespace BodeApp
                 MessageBox.Show("Measurement process was canceled and exported.");
                 stopMeasurementButton.Visible = false;
                 startMeasurementButton.BackColor = SystemColors.Control;
+<<<<<<< HEAD
+=======
+                resetButton.Enabled = true;
+>>>>>>> parent of 8a7f4b5 (new mux code)
             }
             finally
             {
@@ -198,7 +213,11 @@ namespace BodeApp
                 token.ThrowIfCancellationRequested();
                 ExecuteMeasurement();
                 // 10000 = 10 seconds
+<<<<<<< HEAD
                 Thread.Sleep(10000);
+=======
+                Thread.Sleep(8000);
+>>>>>>> parent of 8a7f4b5 (new mux code)
             }
         }
         private void ExecuteMeasurement()
@@ -333,7 +352,11 @@ namespace BodeApp
             }
 
             //Code Below can be enable to give the program a custom path to save csv (BECAREFUL if using onedrive due to conectivity issues)
+<<<<<<< HEAD
             //string filePath = Path.Combine(customPath,fileName);
+=======
+            string filePath = Path.Combine(customPath,fileName);
+>>>>>>> parent of 8a7f4b5 (new mux code)
 
             //Update fileName to filePath if setting up custom path
             File.WriteAllLines(fileName, csvLines);
@@ -376,7 +399,11 @@ namespace BodeApp
             }
 
             //Code Below can be enable to give the program a custom path to save csv (BECAREFUL if using onedrive due to conectivity issues)
+<<<<<<< HEAD
             //string filePath = Path.Combine(customPath,fileName);
+=======
+            string filePath = Path.Combine(customPath,fileName);
+>>>>>>> parent of 8a7f4b5 (new mux code)
 
             //Update fileName to filePath if setting up custom path
             File.WriteAllLines(fileName, csvLines);

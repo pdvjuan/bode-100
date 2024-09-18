@@ -170,11 +170,19 @@
             // 
             resetButton.BackColor = Color.Red;
             resetButton.ForeColor = Color.White;
+<<<<<<< HEAD
             resetButton.Location = new Point(528, 466);
             resetButton.Name = "resetButton";
             resetButton.Size = new Size(150, 23);
             resetButton.TabIndex = 19;
             resetButton.Text = "Reset";
+=======
+            resetButton.Location = new Point(620, 557);
+            resetButton.Name = "resetButton";
+            resetButton.Size = new Size(47, 23);
+            resetButton.TabIndex = 19;
+            resetButton.Text = "Clear";
+>>>>>>> parent of 8a7f4b5 (new mux code)
             resetButton.UseVisualStyleBackColor = false;
             resetButton.Click += resetButton_Click;
             // 
