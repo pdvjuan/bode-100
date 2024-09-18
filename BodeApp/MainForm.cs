@@ -28,11 +28,7 @@ namespace BodeApp
         private string testTemp = "";
         private CancellationTokenSource cts;
         //Enter file path below
-<<<<<<< HEAD
-        private string customPath = "";
-=======
         private string customPath = @"C:\Users\avend\Documents\PathRightED";
->>>>>>> parent of 8a7f4b5 (new mux code)
 
         public MainForm()
         {
@@ -43,7 +39,7 @@ namespace BodeApp
         {
             auto = new BodeAutomation();
             // Set the TextBox to the current date and time
-            dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"); 
+            dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -134,22 +130,10 @@ namespace BodeApp
         private void resetButton_Click(object sender, EventArgs e)
         {
             resultsListBox.Items.Clear();
-<<<<<<< HEAD
-            durationTextBox.Text = string.Empty;
-            measurementCount = 0;
-            resistanceAt1000HzList.Clear();
-            lengthOfSampleList.Clear();
-            testTempList.Clear();
-            // Set the TextBox to the current date and time
-            dateTimeTextBox.Text = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            startMeasurementButton.BackColor = SystemColors.Control;
-            stopMeasurementButton.Visible = false;
-=======
             resistanceAt1000HzList.Clear();
             lengthOfSampleList.Clear();
             testTempList.Clear();
             timeList.Clear();
->>>>>>> parent of 8a7f4b5 (new mux code)
         }
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
@@ -163,6 +147,7 @@ namespace BodeApp
             }
 
             startMeasurementButton.BackColor = Color.LightGreen;
+            resetButton.Enabled = false;
             stopMeasurementButton.Visible = true;
             stopMeasurementButton.Enabled = true;
 
@@ -181,21 +166,20 @@ namespace BodeApp
                     SaveToCSVAuto();
                 }
                 MessageBox.Show("Measurement process completed and exported.");
+                resetButton.Enabled = true;
             }
             catch (OperationCanceledException)
             {
                 MessageBox.Show("Measurement process was canceled and exported.");
                 stopMeasurementButton.Visible = false;
                 startMeasurementButton.BackColor = SystemColors.Control;
-<<<<<<< HEAD
-=======
                 resetButton.Enabled = true;
->>>>>>> parent of 8a7f4b5 (new mux code)
             }
             finally
             {
                 stopMeasurementButton.Visible = false;
                 startMeasurementButton.BackColor = SystemColors.Control;
+                resetButton.Enabled = true;
             }
 
         }
@@ -206,18 +190,14 @@ namespace BodeApp
             cts.Cancel();
         }
 
-        private void RunMeasurementLoop(int numberOfIntervals,CancellationToken token)
+        private void RunMeasurementLoop(int numberOfIntervals, CancellationToken token)
         {
             for (int i = 0; i < numberOfIntervals; i++)
             {
                 token.ThrowIfCancellationRequested();
                 ExecuteMeasurement();
                 // 10000 = 10 seconds
-<<<<<<< HEAD
-                Thread.Sleep(10000);
-=======
                 Thread.Sleep(8000);
->>>>>>> parent of 8a7f4b5 (new mux code)
             }
         }
         private void ExecuteMeasurement()
@@ -283,7 +263,7 @@ namespace BodeApp
         }
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - END
-        
+
         private void inputTextBox_TextChanged(object sender, EventArgs e)
         {
             bool allInputsFilled = ValidateInputs();
@@ -352,14 +332,10 @@ namespace BodeApp
             }
 
             //Code Below can be enable to give the program a custom path to save csv (BECAREFUL if using onedrive due to conectivity issues)
-<<<<<<< HEAD
-            //string filePath = Path.Combine(customPath,fileName);
-=======
-            string filePath = Path.Combine(customPath,fileName);
->>>>>>> parent of 8a7f4b5 (new mux code)
+            string filePath = Path.Combine(customPath, fileName);
 
             //Update fileName to filePath if setting up custom path
-            File.WriteAllLines(fileName, csvLines);
+            File.WriteAllLines(filePath, csvLines);
         }
 
         private void SaveToCSV()
@@ -399,22 +375,18 @@ namespace BodeApp
             }
 
             //Code Below can be enable to give the program a custom path to save csv (BECAREFUL if using onedrive due to conectivity issues)
-<<<<<<< HEAD
-            //string filePath = Path.Combine(customPath,fileName);
-=======
-            string filePath = Path.Combine(customPath,fileName);
->>>>>>> parent of 8a7f4b5 (new mux code)
+            string filePath = Path.Combine(customPath, fileName);
 
             //Update fileName to filePath if setting up custom path
-            File.WriteAllLines(fileName, csvLines);
+            File.WriteAllLines(filePath, csvLines);
 
             //Update fileName to filePath if setting up custom path
-            MessageBox.Show($"Data has been exported to {fileName}");
+            MessageBox.Show($"Data has been exported to {filePath}");
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             bode?.ShutDown();
-        } 
+        }
     }
 }
