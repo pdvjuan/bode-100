@@ -21,34 +21,11 @@ This is a Windows Forms application developed in C# using Visual Studio 2022.
     ```sh
     dotnet restore
     ```
-    
-4. Install the MCC DAQ Software:
-   ```sh
-   Download and install the MCC DAQ Software from the Measurement Computing website. This installation includes InstaCal (for hardware configuration) and the MCC DAQ API.
-   ```
-   ```sh
-   Once installed, run InstaCal to configure and test your DAQ hardware. Ensure the device is properly configured before running the project.
-   ```
 
-5. Add MCC DAQ Reference to the Project:
-   ```sh
-   After installing the MCC DAQ software, add the required MccDaq.dll reference to your project:
-   ```
-       ```sh
-       In Visual Studio, right-click on References in the Solution Explorer and select Add Reference.
-       ```
-       ```sh
-       In the dialog, click Browse and navigate to the MCC DAQ installation folder (typically C:\Program Files (x86)\Measurement Computing\DAQ\ or a similar path).
-       ```
-       ```sh
-       Select MccDaq.dll and add it to your project.
-       ```
-
-7. Build the project:
+4. Build the project:
     ```sh
     dotnet build
     ```
-8. Run the project to verify communication with the DAQ hardware.
 
 ## Running the Application
 
