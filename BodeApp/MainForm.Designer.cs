@@ -319,9 +319,9 @@
             inputLabel3.Location = new Point(14, 191);
             inputLabel3.Margin = new Padding(4, 0, 4, 0);
             inputLabel3.Name = "inputLabel3";
-            inputLabel3.Size = new Size(74, 15);
+            inputLabel3.Size = new Size(80, 15);
             inputLabel3.TabIndex = 5;
-            inputLabel3.Text = "Sample ID A:";
+            inputLabel3.Text = "Sample ID 1A:";
             // 
             // inputLabel4
             // 
@@ -371,31 +371,31 @@
             inputLabel8.Name = "inputLabel8";
             inputLabel8.Size = new Size(115, 15);
             inputLabel8.TabIndex = 13;
-            inputLabel8.Text = "Number of Samples:";
+            inputLabel8.Text = "Number of Sensor:";
             // 
             // inputLabel9
             // 
             inputLabel9.Location = new Point(12, 244);
             inputLabel9.Name = "inputLabel9";
-            inputLabel9.Size = new Size(74, 15);
+            inputLabel9.Size = new Size(80, 15);
             inputLabel9.TabIndex = 1;
-            inputLabel9.Text = "Sample ID B:";
+            inputLabel9.Text = "Sample ID 1B:";
             // 
             // inputLabel10
             // 
             inputLabel10.Location = new Point(14, 297);
             inputLabel10.Name = "inputLabel10";
-            inputLabel10.Size = new Size(74, 15);
+            inputLabel10.Size = new Size(80, 15);
             inputLabel10.TabIndex = 9;
-            inputLabel10.Text = "Sample ID C:";
+            inputLabel10.Text = "Sample ID 2C:";
             // 
             // inputLabel11
             // 
             inputLabel11.Location = new Point(15, 350);
             inputLabel11.Name = "inputLabel11";
-            inputLabel11.Size = new Size(74, 15);
+            inputLabel11.Size = new Size(80, 15);
             inputLabel11.TabIndex = 10;
-            inputLabel11.Text = "Sample ID D:";
+            inputLabel11.Text = "Sample ID 2D:";
             // 
             // dateTimeTextBox
             // 

@@ -37,7 +37,7 @@ namespace BodeApp
         private CancellationTokenSource cts;
         static MccBoard daqBoard = new MccDaq.MccBoard(0); // DAQ ID 0
         //Enter file path below
-        private string customPath = @"C:\Users\juanp\Documents";
+        private string customPath = @"C:\Users\avend\Documents\PathRightED";
 
         public MainForm()
         {
