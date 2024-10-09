@@ -134,6 +134,8 @@ namespace BodeApp
             lengthOfSampleList.Clear();
             testTempList.Clear();
             timeList.Clear();
+
+            measurementCount = 0;
         }
 
         // IMPORTANT CODE SECTION FOR MEASUREMENTS - START
@@ -153,6 +155,8 @@ namespace BodeApp
 
             int seconds = measurementDuration * 60;
             int numberOfIntervals = seconds / 10;
+
+            resultsListBox.Items.Add("Measuring Starting...");
 
             // Initialize the cancellation token source
             cts = new CancellationTokenSource();
@@ -174,12 +178,14 @@ namespace BodeApp
                 stopMeasurementButton.Visible = false;
                 startMeasurementButton.BackColor = SystemColors.Control;
                 resetButton.Enabled = true;
+                exportButton.Enabled = true;
             }
             finally
             {
                 stopMeasurementButton.Visible = false;
                 startMeasurementButton.BackColor = SystemColors.Control;
                 resetButton.Enabled = true;
+                exportButton.Enabled = true;
             }
 
         }
@@ -247,7 +253,7 @@ namespace BodeApp
                 });
 
                 // Enable export button
-                exportButton.Enabled = true;
+                //exportButton.Enabled = true;
             }
             catch (Exception ex)
             {
