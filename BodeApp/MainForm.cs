@@ -202,48 +202,66 @@ namespace BodeApp
         }
         private void ExecuteMeasurement()
         {
-            measurementCount++;
-            // Configure sweep
-            adapterMeasurement.ConfigureSweep(900, 1100, 201, SweepMode.Logarithmic);
-
-            // Start the measurement
-            ExecutionState state = adapterMeasurement.ExecuteMeasurement();
-            if (state != ExecutionState.Ok)
+            try
             {
+                measurementCount++;
+
+                // Configure sweep
+                adapterMeasurement.ConfigureSweep(900, 1100, 201, SweepMode.Logarithmic);
+
+                // Start the measurement
+                ExecutionState state = adapterMeasurement.ExecuteMeasurement();
+                if (state != ExecutionState.Ok)
+                {
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        MessageBox.Show(state.ToString());
+                        bode.ShutDown();
+                    });
+                    return;
+                }
+
+                // Retrieve the measurement frequencies and resistance values
+                double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
+                double[] resistances = adapterMeasurement.Results.Rs();
+
+                // Find index of the frequencies closest to 1000 Hz
+                int index1000Hz = FindClosestIndex(frequencies, 1000);
+                lengthOfSample = inputTextBox6.Text;
+                testTemp = inputTextBox7.Text;
+                string timeOfMeasurement = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+
+                // Retrieve resistance values at the closest indices
+                double resistanceAt1000Hz = resistances[index1000Hz];
+
+                // Add the resistance value to the list
+                resistanceAt1000HzList.Add(resistanceAt1000Hz);
+                lengthOfSampleList.Add(lengthOfSample);
+                testTempList.Add(testTemp);
+                timeList.Add(timeOfMeasurement);
+
+                // Update the UI with the new measurement results
                 this.Invoke((MethodInvoker)delegate
                 {
-                    MessageBox.Show(state.ToString());
-                    bode.ShutDown();
+                    resultsListBox.Items.Add($"{measurementCount}. Sample: {lengthOfSample}. Temp {testTemp}. Res at index {index1000Hz}: {resistanceAt1000Hz} Ohms. Time: {timeOfMeasurement}");
                 });
-                return;
+
+                // Enable export button
+                exportButton.Enabled = true;
             }
-
-            // Retrieve the measurement frequencies and resistance values
-            double[] frequencies = adapterMeasurement.Results.MeasurementFrequencies;
-            double[] resistances = adapterMeasurement.Results.Rs();
-
-            // Find index of the frequencies closest to 1000 Hz
-            int index1000Hz = FindClosestIndex(frequencies, 1000);
-            lengthOfSample = inputTextBox6.Text;
-            testTemp = inputTextBox7.Text;
-            string timeOfMeasurement = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-
-            // Retrieve resistance values at the closest indices
-            double resistanceAt1000Hz = resistances[index1000Hz];
-
-            // Add the resistance value to the list
-            resistanceAt1000HzList.Add(resistanceAt1000Hz);
-            lengthOfSampleList.Add(lengthOfSample);
-            testTempList.Add(testTemp);
-            timeList.Add(timeOfMeasurement);
-
-            this.Invoke((MethodInvoker)delegate
+            catch (Exception ex)
             {
-                resultsListBox.Items.Add($"{measurementCount}. Sample: {lengthOfSample}. Temp {testTemp}. Res at index {index1000Hz}: {resistanceAt1000Hz} Ohms. Time: {timeOfMeasurement}");
-            });
+                // Handle any exceptions that occur during execution
+                this.Invoke((MethodInvoker)delegate
+                {
+                    MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                });
 
-            exportButton.Enabled = true;
+                SaveToCSVAuto();
+                bode.ShutDown();
+            }
         }
+
         static int FindClosestIndex(double[] array, double target)
         {
             int closestIndex = -1;
@@ -335,7 +353,22 @@ namespace BodeApp
             string filePath = Path.Combine(customPath, fileName);
 
             //Update fileName to filePath if setting up custom path
-            File.WriteAllLines(filePath, csvLines);
+            try
+            {
+                File.WriteAllLines(filePath, csvLines);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have permission to write to this directory.", "Permission Error", MessageBoxButtons.OK);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"An I/O error occurred: {ex.Message}", "I/O Error", MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButtons.OK);
+            }
         }
 
         private void SaveToCSV()
@@ -378,7 +411,22 @@ namespace BodeApp
             string filePath = Path.Combine(customPath, fileName);
 
             //Update fileName to filePath if setting up custom path
-            File.WriteAllLines(filePath, csvLines);
+            try
+            {
+                File.WriteAllLines(filePath, csvLines);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                MessageBox.Show("You do not have permission to write to this directory.", "Permission Error", MessageBoxButtons.OK);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"An I/O error occurred: {ex.Message}", "I/O Error", MessageBoxButtons.OK);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An unexpected error occurred: {ex.Message}", "Error", MessageBoxButtons.OK);
+            }
 
             //Update fileName to filePath if setting up custom path
             MessageBox.Show($"Data has been exported to {filePath}");
@@ -387,6 +435,7 @@ namespace BodeApp
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             bode?.ShutDown();
+            SaveToCSVAuto();
         }
     }
 }
